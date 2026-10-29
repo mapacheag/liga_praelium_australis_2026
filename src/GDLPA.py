@@ -243,3 +243,29 @@ class ConfiguracionLiga:
                     'Duelo' : duelo
                 })
         return pd.DataFrame(df_fixture_fechas_input_data)
+
+    ### Construcción de la tabla de posiciones (dinámica) [No, no es dinámica de excel, no sé qué son las tablas dinámicas de excel lamentablemente]
+
+    ## El criterio de orden será:
+    ## En primer lugar según el puntaje total acumulado por el esgrimista   
+    ## En segundo lugar, por la diferencia de intercambios acumulada por el esgrimista
+    ## En tercer lugar, por la cantidad de intercambios a favor acumulados por el esgrimista
+    ## En cuarto lugar, por la cantidad menor de dobles acumulada por el esgrimista
+    ## En quinto lugar, que dios nos salve
+
+    ### Esquema de datos (guía personal para no perderme), porque la tabla no me sale
+
+    ## Posición --- Nombre --- Puntaje --- Diferencia --- A favor --- En contra --- Dobles
+
+    ## Las posiciones son nominales de cada fila, ya que la primera fila con las etiquetas de cada columna es 0, así que queda excelente
+    ## Los nombres, ptjes, intercambios y dobles los puedo traer desde cada clase
+    ## El lío es, el ordenamiento
+
+    def tabla_de_posiciones(self) -> pd.DataFrame:
+        input_data_tabla_de_mierda = {}
+
+        for esgrimista in ConfiguracionLiga.participantes:
+            pass
+
+
+        tabla_de_mierda = pd.DataFrame(input_data_tabla_de_mierda)
