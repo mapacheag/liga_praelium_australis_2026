@@ -1,0 +1,276 @@
+\RequirePackage{etex}
+\newcommand{\DIRClass}{}
+\documentclass
+[pauta]
+%[mayor]
+%[menor]
+%[basica]
+{\DIRClass cmat_grupales_FICHA}
+\usepackage{cmat_grupales_MACROS}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric}
+\usetikzlibrary{positioning}
+\usetikzlibrary{calc}
+\usepackage{epstopdf}
+\usepackage{subcaption}
+\renewcommand{\thesubfigure}{}
+\captionsetup[subfigure]{labelformat=empty}
+
+%\newcommand*{\Hex}{draw, regular polygon, regular polygon sides = 6, inner sep=0.25cm}
+
+\newcommand*{\cultivo}{\begin{center}\begin{tikzpicture}[node distance={10.2mm}, main/.style = {draw, regular polygon, regular polygon sides = 6, minimum size=12mm, inner sep=0pt, very thick}]}
+\newcommand*{\fin}{\end{tikzpicture}\end{center}}
+\newcommand*{\finfin}{\end{tikzpicture}}
+\newcommand*{\cultivos}{\begin{tikzpicture}[node distance={10.2mm}, main/.style = {draw, regular polygon, regular polygon sides = 6, minimum size=12mm, inner sep=0pt, very thick}]}
+\newcommand*{\granja}{\node[main]}
+\newcommand*{\cultivoP}{\begin{center}\begin{tikzpicture}[node distance={7.8mm}, main/.style = {draw, regular polygon, regular polygon sides = 6, minimum size=8.8mm, inner sep=0pt, very thick}]}
+\newcommand*{\cultivosP}{\begin{tikzpicture}[node distance={7.8mm}, main/.style = {draw, regular polygon, regular polygon sides = 6, minimum size=8.8mm, inner sep=0pt, very thick}]}
+\newcommand*{\granjaN}{\node[main, fill=gray]}
+\newcommand*{\grande}{10.2mm}
+\newcommand*{\enano}{7.8mm}
+
+%\epstopdfsetup{outdir=./}
+%% compilar siempre TeXify -> DVIPS -> ps2pdf
+%% en winedt, Shift + Control + X -> Shift + Control + D -> ps2pdf
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%                          %%%%%
+%%%%%     SECTOR EDITABLE      %%%%%
+%%%%%                          %%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%% NOTA: en caso de fallas, revisar
+%%       'set-up' (linea 66)
+
+
+%% Propiedades básicas
+%% Ajustar qué fecha es (1-5 tradicionalmente), versión, el día de la prueba
+%% Y las horas!
+
+
+\newcommand{\nfecha}{Fecha X, Borrador}% <Ordinal> fecha
+\newcommand{\version}{XXIV}% 2003 -> I
+\newcommand{\versionbasica}{XXIII}% 2004 -> I
+\newcommand{\fecha}{día a definir / 2026}% DD de <mes> de AAAA
+\newcommand{\titgrupal}{Colonización Planetaria}
+\newcommand{\rutaprueba}{cmat_grupales_TEXTO.tex}
+
+
+%% NOTA: elegir al final del documento una tabla de puntaje para la pauta
+
+
+
+%%
+%% Horas: Cambiar según corresponda
+%%
+
+
+\textoalt{
+\newcommand{\horainicial}{16:00 }
+\newcommand{\horafinal}{18:00}
+\newcommand{\horasubida}{18:20}
+%Básica
+}{
+\newcommand{\horainicial}{15:45 }
+\newcommand{\horafinal}{17:45}
+\newcommand{\horasubida}{18:05}
+%Menor
+}{
+\newcommand{\horainicial}{16:15 }
+\newcommand{\horafinal}{18:15}
+\newcommand{\horasubida}{18:35}
+%Mayor
+}{}
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%
+%%%% Set-up %%%%  NO TOCAR (salvo sea necesario)
+%%%%%%%%%%%%%%%%
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Para el diseño de pagina
+%%
+
+%\geometry{letterpaper, top=1.5cm, bottom=1.2cm, right=2cm, left=2cm, includefoot} % Márgenes de página
+
+\rhead{}
+\lhead{}
+\rfoot{}% comentar(%) para obtener 'justifique su respuesta'
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% En caso de emergencia...
+%%
+
+%% para cambios locales
+%%
+%\psset{xunit=1.0cm,yunit=1.0cm,algebraic=true,dotstyle=o,dotsize=3pt 0,linewidth=0.8pt,arrowsize=3pt 2,arrowinset=0.25}
+%\useackage[T1]{fontenc}% codificacion fuentes
+%\usepackage[activeacute,spanish]{babel}% idioma
+%\usepackage[utf8]{inputenc}% codificacion caracteres
+%\usepackage[dvips]{graphicx}% driver colores
+\DeclareGraphicsExtensions{.bmp,.png,.pdf,.jpg}
+
+%% si la clase 'falla'
+%%
+%\usepackage[<option>]{../CMAT-macrosgrupales}
+
+%\puntajefalse
+%\basicatrue
+%\menortrue
+%\mayortrue
+%\pautatrue
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Otros paquetes posiblemente solicitados...
+%%
+
+%\usepackage{wrapfig}% env: wrapfig (mini figuras)
+%\usepackage{subfigure}% extencion figure + env: subfigure
+%\usepackage[rightcaption]{sidecap}% env: SCfigure (mover caption)
+
+%\usepackage{tabularx}% env: tabularx
+%\usepackage{longtable}% env: longtable
+
+%\usepackage{fancyvrb}% cmd: verbatin (cajas de codigo latex)
+%\usepackage{hhline}% cmd: hhline
+%\usepackage{arcs}% cmd: overarc, underarc
+%\usepackage{physics}% +comandos y simbolos
+
+%\usepackage{enumerate}% enumitem cargado por defecto
+
+%\usepackage{hyperref}% NO MOVER, SOLO COMENTAR (%)
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Posibles comandos comunes...
+
+\providecommand{\abs}[1]{\lvert#1\rvert}
+\newcommand{\pares}[1]{\left(#1\right)}
+\newcommand{\nariz}[1]{\left\{#1\right\}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+
+\begin{document}
+
+
+%% NO TOCAR
+%% ESTO DEBERÍA FUNCIONAR SOLO
+%% (espero)
+
+\author{ }
+
+\begin{minipage}{0.3\textwidth}
+\psscalebox{1.6}{
+        \psset{unit=0.5cm,algebraic=true,dotstyle=*,dotsize=3pt 0,linewidth=0.8pt,arrowsize=3pt 2,arrowinset=0.25}
+        \begin{pspicture}(-5,0)(1,3.2)
+        \rput[tl](-5.5,5.2){\includegraphics[width=3cm, bb = 0 0 556 556]{\DIRClass cmat_logo.eps}        }
+	    \uput[ur](-1.5,0.315){\psscalebox{3.8}{\textoalt{\versionbasica}{\version}{\version}{\version}}}
+        \end{pspicture}
+        }\par\bigskip
+
+\end{minipage}\hfill
+\begin{minipage}{0.5\textwidth}
+%\vspace{-1.2cm}
+\begin{flushright}
+  {\LARGE\textbf{\nfecha}}\\
+  {\fecha}\\
+  {\LARGE \textbf{\textoalt{Básica}{Menor}{Mayor}{Borrador Confidencial}}}\\
+  {Grupal}
+  \end{flushright}
+\end{minipage}
+
+%\begin{minipage}{0.3\textwidth}
+       % \centering
+      %  \includegraphics[scale=0.05]{cmat_logo.pdf}  % Cambia a PDF y ajusta el tamaño según sea necesario
+     %   \par\bigskip
+    %\end{minipage}\hfill
+    %\begin{minipage}{0.5\textwidth}
+       % \begin{flushright}
+      %      {\LARGE\textbf{\nfecha}}\\
+     %       {\fecha}\\
+    %        {\LARGE \textbf{\textoalt{Básica}{Menor}{Mayor}{Soluciones}}}\\
+   %         {Grupal}
+  %      \end{flushright}
+ %\end{minipage}
+
+\textoocultoSN{S}{S}{S}{N}{\psset{unit=0.8cm,algebraic=true,dotstyle=*,dotsize=3pt 0,linewidth=0.8pt,arrowsize=3pt 2,arrowinset=0.25}
+        \begin{pspicture*}(0,-2.7)(\linewidth,-1.9)
+        \psline[linewidth=1pt](0,-1.9)(\linewidth,-1.9)
+        \rput[t](0.5\linewidth,-1.9){\fbox{\large\textbf{Entreguen solo una respuesta por equipo.}}}
+        \end{pspicture*}}
+
+
+%%
+%% cuadro texto formato online
+%%
+
+
+%\textoocultoSN{S}{S}{S}{N} % visible
+\textoocultoSN{N}{N}{N}{N} % oculto
+{\fbox{\parbox{\textwidth-6.8pt}{\textbf{Aviso importante:} Tienen \textbf{dos horas} para resolver la prueba, entre las \horainicial y \horafinal. Posterior a ello, tendrán \textbf{sólo} 20 minutos para subir la prueba a la plataforma, hasta las \horasubida. \textbf{Pruebas subidas más tarde, o no subidas a la plataforma, no serán evaluadas}. \\ Recomendamos además escribir no más de tres respuestas por plana, de modo que sea lo más ordenado posible. }}}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% ACÁ EMPIEZA EL TEXTO DE LA PRUEBA %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\vspace{1em}
+\begin{center} {\Large\textbf{\titgrupal}}\end{center}
+\vspace{1em}
+
+
+\newcommand{\saltoextra}{}
+\input{\rutaprueba}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%
+%% TABLA DE PUNTAJES %%
+%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+\begin{parrafoocultoSN}{N}{N}{N}{S}
+\newpage
+\section*{Preguntas por nivel}
+
+%% Favor de elegir una sola de las siguientes tablas de acuerdo al interes y dejar el resto comentado (%).
+
+%% descripciones:
+
+% tablapuntaje: Tabla usual. Se usa por defecto.
+% Los puntajes de subpreguntas se muestran acompañados por un indice "(<#indice>)" con "+" como separadores.
+
+% tablapuntajeH: Tabla recomendada para pruebas donde hayan muchas preguntas con una cantidad mas menos consistente de subpreguntas.
+% Se muestran todos los puntajes de las subpreguntas usando "+" como separadores.
+
+% tablapuntajeV: Tabla recomendada para pruebas donde hayan pocas preguntas con muchas subpreguntas.
+% Los puntajes de subpreguntas se muestran en pisos separados.
+
+\tablapuntaje
+%\tablapuntajeH
+%\tablapuntajeV
+
+\end{parrafoocultoSN}
+
+
+
+
+\end{document} 

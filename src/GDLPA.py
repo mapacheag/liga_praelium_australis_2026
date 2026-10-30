@@ -265,7 +265,7 @@ class ConfiguracionLiga:
         input_data_tabla_de_mierda = {}
 
         for esgrimista in ConfiguracionLiga.participantes:
-            pass
+            
 
 
         tabla_de_mierda = pd.DataFrame(input_data_tabla_de_mierda)

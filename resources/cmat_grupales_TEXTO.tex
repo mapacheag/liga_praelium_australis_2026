@@ -1,0 +1,644 @@
+% Historia
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%% ASISTENCIA PARA REDACCIÓN %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% \cultivo -> genera un lienzo para 1 dibujo de tamaño normal
+% \cultivos -> genera un lienzo para 2 o más dibujos de tamaño normal
+% \cultivoP -> genera un lienzo para 1 dibujo de tamaño pequeño
+% \cultivosP -> genera un lienzo para 2 o más dibujos de tamaño pequeño
+% \granja -> dibuja una granja hexagonal adecuada al tamaño del lienzo
+% \granjaN -> dibuja una granja hexagonal adecuada al tamaño del lienzo; el hexágono está relleno de color negro
+% \fin -> finaliza un lienzo de 1 dibujo
+% \finfin -> finaliza un lienzo de 2 o más dibujos
+
+% node distance en tamaño normal = 10.2mm
+% node distance en tamaño pequeño = 7.8mm
+% arriba derecha = 30
+% abajo derecha = 330
+% arriba izquierda = 150
+% abajo izquierda = 210
+% arriba = [above of = #]      ; # es el nombre del nodo de referencia
+% abajo = [below of = #]       ; # es el nombre del nodo de referencia
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  EJEMPLOS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%\cultivo
+%\granja (g1) {$G_1$} ;
+%\granja (g2) at ($ (g1) + (330:10.2mm) $) {$G_2$} ; % abajo derecha
+%\granja (g3) at ($ (g1) + (210:10.2mm) $) {$G_3$} ; % abajo izquierda
+%\granja (g4) at ($ (g1) + (150:10.2mm) $) {$G_4$} ; % arriba izquierda
+%\granja (g5) at ($ (g1) + (30:10.2mm) $) {$G_5$} ; % arriba derecha
+%\granja (g6) [above of = g1] {$G_6$} ; % arriba
+%\granja (g7) [below of = g1] {$G_7$} ; % abajo
+%\fin
+
+%\vspace{10.2mm}
+
+%\cultivoP
+%\granja (g1) {$G_1$} ;
+%\granja (g2) at ($ (g1) + (330:7.8mm) $) {$G_2$} ; % abajo derecha
+%\granja (g3) at ($ (g1) + (210:7.8mm) $) {$G_3$} ; % abajo izquierda
+%\granja (g4) at ($ (g1) + (150:7.8mm) $) {$G_4$} ; % arriba izquierda
+%\granja (g5) at ($ (g1) + (30:7.8mm) $) {$G_5$} ; % arriba derecha
+%\granja (g6) [above of = g1] {$G_6$} ; % arriba
+%\granja (g7) [below of = g1] {$G_7$} ; % abajo
+%\fin
+
+%\vspace{10.2mm}
+
+%\begin{center}
+%\cultivos
+%\granja (g1) {$G_1$} ;
+%\granja (g2) at ($ (g1) + (330:10.2mm) $) {$G_2$} ; % abajo derecha
+%\granja (g3) at ($ (g1) + (210:10.2mm) $) {$G_3$} ; % abajo izquierda
+%\granja (g4) at ($ (g1) + (150:10.2mm) $) {$G_4$} ; % arriba izquierda
+%\granja (g5) at ($ (g1) + (30:10.2mm) $) {$G_5$} ; % arriba derecha
+%\granja (g6) [above of = g1] {$G_6$} ; % arriba
+%\granja (g7) [below of = g1] {$G_7$} ; % abajo
+%\finfin
+%\hspace{2mm}
+%\cultivos
+%\granja (g1) {$G_1$} ;
+%\granja (g2) at ($ (g1) + (330:10.2mm) $) {$G_2$} ; % abajo derecha
+%\granja (g3) at ($ (g1) + (210:10.2mm) $) {$G_3$} ; % abajo izquierda
+%\granja (g4) at ($ (g1) + (150:10.2mm) $) {$G_4$} ; % arriba izquierda
+%\granja (g5) at ($ (g1) + (30:10.2mm) $) {$G_5$} ; % arriba derecha
+%\granja (g6) [above of = g1] {$G_6$} ; % arriba
+%\granja (g7) [below of = g1] {$G_7$} ; % abajo
+%\finfin
+%\end{center}
+
+%\vspace{10.2mm}
+
+%\begin{center}
+%\cultivosP
+%\granja (g1) {$G_1$} ;
+%\granja (g2) at ($ (g1) + (330:7.8mm) $) {$G_2$} ; % abajo derecha
+%\granja (g3) at ($ (g1) + (210:7.8mm) $) {$G_3$} ; % abajo izquierda
+%\granja (g4) at ($ (g1) + (150:7.8mm) $) {$G_4$} ; % arriba izquierda
+%\granja (g5) at ($ (g1) + (30:7.8mm) $) {$G_5$} ; % arriba derecha
+%\granja (g6) [above of = g1] {$G_6$} ; % arriba
+%\granja (g7) [below of = g1] {$G_7$} ; % abajo
+%\finfin
+%\hspace{2mm}
+%\cultivosP
+%\granja (g1) {$G_1$} ;
+%\granja (g2) at ($ (g1) + (330:7.8mm) $) {$G_2$} ; % abajo derecha
+%\granja (g3) at ($ (g1) + (210:7.8mm) $) {$G_3$} ; % abajo izquierda
+%\granja (g4) at ($ (g1) + (150:7.8mm) $) {$G_4$} ; % arriba izquierda
+%\granja (g5) at ($ (g1) + (30:7.8mm) $) {$G_5$} ; % arriba derecha
+%\granja (g6) [above of = g1] {$G_6$} ; % arriba
+%\granja (g7) [below of = g1] {$G_7$} ; % abajo
+%\finfin
+%\end{center}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%% PRUEBA %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% historia
+\noindent Tras unas breves vacaciones en las lunas de Júpiter, el equipo académico de CMAT ha %
+sido designado para emprender una nueva misión. Liderados por Patito, deberán explorar la galaxia %
+en busca de un planeta con condiciones para el desarrollo de vida humana. De esta forma, Patito y %
+su equipo de aprendices se han embarcado en la nave \emph{Conejo Matemático Misterioso 1} o \emph{CMM-1} %
+y han comenzado un largo y emocionante viaje hacia los confines del universo.
+
+\noindent Una tranquila jornada en el CMM-1 se vivía rodeada de café y galletas matemáticas. Patito, %
+sentado en una de las sillas del casino de la nave, disfrutaba de un delicioso completo cuando un grito interrumpió %
+su descanso para comer. --- \emph{¡Lo encontramos!} --- se escuchó repetidamente mientras las pantallas de la nave %
+mostraban los resultados del análisis de un planeta. El planeta en cuestión, era habitable. Patito, al borde de las %
+lágrimas de emoción, decidió nombrar al planeta como \emph{Champiñón}.
+
+\noindent Después de comunicar las excelentes noticias a la Tierra, Patito recibió una orden incluso más desafiante %
+que la anterior: debía aterrizar en el planeta, explorarlo, hacer mapas y prepararlo para la llegada de más humanos, %
+con el propósito de crear una colonia en él. Patito llamaría a esta colonia como; \emph{Colonia Champiñón Primera}.
+
+\section*{Granjas Espaciales}
+
+\noindent Uno de los desafíos más importantes de Patito, sería el de generar comida para la llegada de nuevos humanos al %
+planeta. Como este era habitable, poseía una atmósfera similar a la Tierra y un suelo que se podría considerar fértil, %
+Patito decidió presentar al equipo académico su nuevo invento.
+
+\noindent Patito llamaría a este invento como \textbf{\emph{Granjas Espaciales}}, a las que designaremos por $\mathbf{G}$. %
+Estas granjas espaciales son estructuras hexagonales que pueden generar comida y se pueden unir entre ellas. Cuando %
+\textbf{dos o más granjas espaciales} se unen entre ellas, a este grupo le llamamos \textbf{\emph{Campo de Cultivo}}. En los %
+diagramas inferiores se pueden ver \emph{campos de cultivo} con $2$, $3$ y $4$ \emph{granjas espaciales} respectivamente.
+
+\begin{center}
+\cultivos
+\granja (g1) {$G_1$} ;
+\granja (g2) at ($(g1) + (30:\grande)$) {$G_2$} ;
+\finfin
+\hspace{20mm}
+\cultivos
+\granja (g1) {$G_1$} ;
+\granja (g2) at ($(g1) + (30:\grande)$) {$G_2$} ;
+\granja (g3) at ($(g1) + (330:\grande)$) {$G_3$} ;
+\finfin
+\hspace{20mm}
+\cultivos
+\granja (g1) {$G_1$} ;
+\granja (g2) at ($(g1) + (30:\grande)$) {$G_2$} ;
+\granja (g3) at ($(g1) + (330:\grande)$) {$G_3$} ;
+\granja (g4) at ($(g3) + (30:\grande)$) {$G_4$} ;
+\finfin
+\end{center}
+
+\noindent Mientras Patito señalaba al equipo académico la importancia de estas granjas espaciales en la generación de comida %
+para las futuras colonias, explicó los detalles cruciales en el desarrollo de su idea. Las granjas cambiarían su forma de %
+generar comida, dependiendo de la forma en que estas estén unidas entre si. Mencionaremos por ahora dos tipos de uniones.
+
+\begin{itemize}
+\item Conoceremos como \textbf{\emph{granjas vecinas}} a todas aquellas granjas que \textbf{comparten una arista} entre si. Una %
+definición alternativa corresponde a: Son \emph{granjas vecinas} de una granja espacial, todas aquellas granjas que se encuentren %
+adyacentes a esta.
+\item Conoceremos como \textbf{\emph{supergranja}} al conjunto de exactamente tres granjas espaciales que \textbf{compartan un vértice}.
+\end{itemize}
+
+\vspace{2mm}
+
+\noindent En los ejemplos inferiores podemos evaluar la presencia de \emph{granjas vecinas}. En el diagrama de la izquierda, $G_1$ tiene %
+una granja vecina ($G_2$) y $G_2$ tiene una granja vecina ($G_1$). En el diagrama de la derecha, $G_1$, $G_2$ y $G_3$ tienen todas dos granjas %
+vecinas ($G_2$ y $G_3$), ($G_1$ y $G_3$) y ($G_1$ y $G_2$) respectivamente. Las \emph{supergranjas}, por otro lado, están únicamente presentes %
+en el diagrama de la derecha. En este diagrama encontramos un total de una supergranja, comformada por las granjas espaciales $G_1$, $G_2$ y $G_3$.
+
+\begin{center}
+\cultivos
+\granja (g1) {$G_1$} ;
+\granja (g2) at ($(g1) + (30:\grande)$) {$G_2$} ;
+\finfin
+\hspace{20mm}
+\cultivos
+\granja (g1) {$G_1$} ;
+\granja (g2) at ($(g1) + (30:\grande)$) {$G_2$} ;
+\granja (g3) at ($(g1) + (330:\grande)$) {$G_3$} ;
+\finfin
+\end{center}
+
+\vspace{2mm}
+
+\noindent Notemos también que una granja espacial puede ser parte de más de una \emph{supergranja}. En el siguiente diagrama existen dos supergranjas, %
+conformadas por las granjas ($G_1$, $G_2$ y $G_3$) y ($G_2$, $G_3$ y $G_4$) respectivamente.
+
+
+\cultivo
+\granja (g1) {$G_1$} ;
+\granja (g2) at ($(g1) + (30:\grande)$) {$G_2$} ;
+\granja (g3) at ($(g1) + (330:\grande)$) {$G_3$} ;
+\granja (g4) at ($(g3) + (30:\grande)$) {$G_4$} ;
+\fin
+
+\subsection*{Generación de alimentos; Reglas}
+
+Una vez el equipo académico entendió cómo funcionaba el invento de Patito, llegó el momento de resolver una pregunta crucial. ¿Cuánto alimento %
+genera una granja espacial? Para responder ello, Patito presentó al equipo un set de tres reglas que definen la generación de alimentos de una granja espacial %
+en cada caso. Es importante señalar que al momento de calcular la cantidad de alimento que genera una granja, cada una de estas reglas deberá ser verificada %
+de manera \textbf{independiente}.
+
+\begin{itemize}
+\item Cada \emph{granja espacial} produce una cantidad base de $\mathbf{2}$ \textbf{Alimentos}. \textbf{(REGLA 1)}
+\item Cada granja espacial obtiene un adicional de $\mathbf{1}$ \textbf{Alimento} por \textbf{cada} \emph{granja vecina} que esta posea. \textbf{(REGLA 2)}
+\item Cada granja espacial obtiene un adicional de $\mathbf{2}$ \textbf{Alimentos} por \textbf{cada} \emph{supergranja} a la que esta pertenezca. \textbf{(REGLA 3)}
+\end{itemize}
+
+\noindent Como ejemplo evaluaremos la cantidad de alimento generada por el siguiente campo de cultivo, compuesto por las granjas $G_1$, $G_2$ y $G_3$. Para ello, %
+evaluaremos a cada granja de manera independiente.
+
+\cultivo
+\granja (g1) {$G_1$} ;
+\granja (g2) at ($(g1) + (30:\grande)$) {$G_2$} ;
+\granja (g3) at ($(g1) + (330:\grande)$) {$G_3$} ;
+\fin
+
+\begin{itemize}
+\item La granja espacial $G_1$ obtiene $2$ unidades de alimento por \emph{Regla 1}. Sus granjas vecinas son $G_2$ y $G_3$, en total, $2$, por lo que obtendrá un adicional %
+de $2$ de alimento por \emph{Regla 2}. También podemos notar que pertenece a la supergranja compuesta por $G_1$, $G_2$ y $G_3$, obteniendo así un adicional de $2$ de alimento %
+por \emph{Regla 3}.
+\item La granja espacial $G_2$ obtiene $2$ unidades de alimento por \emph{Regla 1}. Sus granjas vecinas son $G_1$ y $G_3$, en total, $2$, por lo que obtendrá un adicional %
+de $2$ de alimento por \emph{Regla 2}. También podemos notar que pertenece a la supergranja compuesta por $G_1$, $G_2$ y $G_3$, obteniendo así un adicional de $2$ de alimento %
+por \emph{Regla 3}.
+\item La granja espacial $G_3$ obtiene $2$ unidades de alimento por \emph{Regla 1}. Sus granjas vecinas son $G_2$ y $G_1$, en total, $2$, por lo que obtendrá un adicional %
+de $2$ de alimento por \emph{Regla 2}. También podemos notar que pertenece a la supergranja compuesta por $G_1$, $G_2$ y $G_3$, obteniendo así un adicional de $2$ de alimento %
+por \emph{Regla 3}.
+\end{itemize}
+
+\noindent Otra forma de desarrollar este caso podría haber sido notar que las tres granjas son equivalentes u homólogas, generando todas la misma cantidad de alimento. Por ambos %
+métodos logramos obtener el total de alimentos generados por el campo de cultivo; $\mathbf{18}$ \textbf{Alimentos}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%% Problema 1
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{probgrupal}{}{}{}
+
+\noindent Juan Carlos, siguiendo las órdenes de Patito ha comenzado a crear algunos campos de cultivo. Encuentre la cantidad total de alimentos que genera cada uno de ellos.
+
+\begin{center}
+\cultivos
+\granja (g1) {$G_1$} ;
+\granja (g2) at ($(g1) + (330:\grande)$) {$G_2$} ;
+\granja (g3) at ($(g2) + (30:\grande)$) {$G_3$} ;
+\finfin
+\hspace{30mm}
+\cultivos
+\granja (g1) {$G_1$} ;
+\granja (g2) at ($(g1) + (150:\grande)$) {$G_2$} ;
+\granja (g3) [above of = g2] {$G_3$} ;
+\granja (g4) [above of = g3] {$G_4$} ;
+\granja (g5) at ($(g4) + (30:\grande)$) {$G_5$} ;
+\granja (g6) at ($(g5) + (330:\grande)$) {$G_6$} ;
+\granja (g7) [below of = g6] {$G_7$} ;
+\granja (g8) at ($(g7) + (330:\grande)$) {$G_8$} ;
+\finfin
+\end{center}
+
+\end{probgrupal}
+
+\begin{solgrupal}
+\noindent Agregar
+\end{solgrupal}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%% Problema 2
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{probgrupal}{}{}{}
+
+Jonathan, siguiendo el ejemplo de Juan Carlos se dirigió a los alrededores de la futura colonia \emph{Colonia Champiñón Segunda}, construyendo los siguientes campos de cultivo. %
+Encuentre la cantidad total de alimentos que genera cada uno de ellos.
+
+\begin{center}
+\cultivos
+\granja (g1) {$G_1$} ;
+\granja (g2) at ($(g1) + (150:\grande)$) {$G_2$} ;
+\granja (g3) [above of = g2] {$G_3$} ;
+\granja (g4) [above of = g3] {$G_4$} ;
+\granja (g5) at ($(g4) + (30:\grande)$) {$G_5$} ;
+\granja (g6) at ($(g5) + (330:\grande)$) {$G_6$} ;
+\granja (g7) [below of = g6] {$G_7$} ;
+\granja (g8) at ($(g7) + (330:\grande)$) {$G_8$} ;
+\finfin
+\hspace{15mm}
+\cultivos
+\granja (g1) {$G_1$} ;
+\granja (g2) at ($(g1) + (30:\grande)$) {$G_2$} ;
+\granja (g3) at ($(g1) + (330:\grande)$) {$G_3$} ;
+\granja (g4) at ($(g3) + (30:\grande)$) {$G_4$} ;
+\granja (g5) at ($(g3) + (330:\grande)$) {$G_5$} ;
+\finfin
+\hspace{15mm}
+\cultivos
+\granja (g1) {$G_1$} ;
+\granja (g2) at ($(g1) + (30:\grande)$) {$G_2$} ;
+\granja (g3) at ($(g1) + (330:\grande)$) {$G_3$} ;
+\granja (g4) at ($(g3) + (30:\grande)$) {$G_4$} ;
+\granja (g5) at ($(g3) + (330:\grande)$) {$G_5$} ;
+\granja (g6) at ($(g5) + (30:\grande)$) {$G_6$} ;
+\finfin
+\end{center}
+
+\end{probgrupal}
+
+
+\begin{solgrupal}
+Agregar
+\end{solgrupal}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%% Problema 3
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{probgrupal}{}{}{}
+\noindent Siguiendo la misión de Patito, el equipo académico en su totalidad se dirigió a una zona llena de osbtáculos para crear granjas espaciales. 
+Karla, una de sus integrantes, creó los siguientes tres campos de cultivo. En ellos, los hexágonos sombreados representan zonas en donde \textbf{NO hay %
+una granja espacial}. Determine la cantidad de alimentos en total que genera cada campo de cultivo.
+
+\begin{center}
+\cultivos
+\granja (g1) {$G_1$} ;
+\granjaN (n2) at ($(g1) + (30:\grande)$) {} ;
+\granjaN (n3) at ($(g1) + (330:\grande)$) {} ;
+\granja (g2) at ($(n2) + (330:\grande)$) {$G_2$} ;
+\granja (g3) at ($(g2) + (30:\grande)$) {$G_3$} ;
+\granjaN (n4) [below of = g3] {} ;
+\granja (g4) at ($(n4) + (30:\grande)$) {$G_4$} ;
+\granja (g5) [above of = g4] {$G_5$} ;
+\finfin
+\hspace{20mm}
+\cultivos
+\granjaN (n1) {} ;
+\granja (g1) [above of = n1] {$G_1$} ;
+\granja (g2) [above of = g1] {$G_2$} ;
+\granja (g3) [below of = n1] {$G_3$} ;
+\granja (g4) [below of = g3] {$G_4$} ;
+\granja (g5) at ($(n1) + (30:\grande)$) {$G_5$} ;
+\granja (g6) at ($(g5) + (30:\grande)$) {$G_6$} ;
+\granja (g7) at ($(n1) + (330:\grande)$) {$G_7$} ;
+\granja (g8) at ($(g7) + (330:\grande)$) {$G_8$} ;
+\granja (g9) at ($(n1) + (210:\grande)$) {$G_9$} ;
+\granja (g10) at ($(g9) + (210:\grande)$) {$G_{10}$} ;
+\granja (g11) at ($(n1) + (150:\grande)$) {$G_{11}$} ;
+\granja (g12) at ($(g11) + (150:\grande)$) {$G_{12}$} ;
+\finfin
+\hspace{20mm}
+\cultivos
+\granja (g1) {$G_1$} ;
+\granja (g2) at ($(g1) + (30:\grande)$) {$G_2$} ;
+\granja (g3) at ($(g1) + (330:\grande)$) {$G_3$} ;
+\granja (g4) at ($(g3) + (30:\grande)$) {$G_4$} ;
+\granja (g5) at ($(g3) + (330:\grande)$) {$G_5$} ;
+\finfin
+\end{center}
+
+\end{probgrupal}
+
+\begin{solgrupal}
+Agregar
+\end{solgrupal}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%% Problema 4
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{probgrupal}{}{}{}
+
+Antoine, que trabajaba en la \emph{Colonia Champiñón Tercera}, ha diseñado los siguientes campos de cultivo. Determine la cantidad de alimento en total %
+que entrega cada uno de ellos.
+
+\begin{center}
+\cultivos
+\granja (g1) {$G_1$} ;
+\granja (g2) at ($(g1) + (150:\grande)$) {$G_2$} ;
+\granja (g3) [above of = g2] {$G_3$} ;
+\granja (g4) [above of = g3] {$G_4$} ;
+\granja (g5) at ($(g4) + (30:\grande)$) {$G_5$} ;
+\granja (g6) at ($(g5) + (330:\grande)$) {$G_6$} ;
+\granja (g7) [below of = g6] {$G_7$} ;
+\granja (g8) at ($(g7) + (330:\grande)$) {$G_8$} ;
+\finfin
+\hspace{15mm}
+\cultivos
+\granja (g1) {$G_1$} ;
+\granja (g2) at ($(g1) + (30:\grande)$) {$G_2$} ;
+\granja (g3) at ($(g1) + (330:\grande)$) {$G_3$} ;
+\granja (g4) at ($(g3) + (30:\grande)$) {$G_4$} ;
+\granja (g5) at ($(g3) + (330:\grande)$) {$G_5$} ;
+\granja (g6) at ($(g5) + (30:\grande)$) {$G_6$} ;
+\finfin
+\end{center}
+
+\end{probgrupal}
+
+\begin{solgrupal}
+Agregar
+\end{solgrupal}
+
+
+%%%%%%%%%%%%%%%%%%%%%%
+%%%%%% Problema 5
+%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{probgrupal}{}{}{}
+
+Jorge estaba explorando el planeta junto a su mascota capibara \emph{Capix}. Tras una extensa jornada, dio con una zona ideal para %
+el desarrollo de granjas espaciales. Determine la cantidad total de alimentos generados por cada campo de cultivo respectivamente.
+
+\begin{center}
+\cultivos
+\granja (g1) {$G_1$} ;
+\granjaN (n2) at ($(g1) + (30:\grande)$) {} ;
+\granjaN (n3) at ($(g1) + (330:\grande)$) {} ;
+\granja (g2) at ($(n2) + (330:\grande)$) {$G_2$} ;
+\granja (g3) at ($(g2) + (30:\grande)$) {$G_3$} ;
+\granjaN (n4) [below of = g3] {} ;
+\granja (g4) at ($(n4) + (30:\grande)$) {$G_4$} ;
+\granja (g5) [above of = g4] {$G_5$} ;
+\finfin
+\hspace{20mm}
+\cultivos
+\granja (g1) {$G_1$} ;
+\granjaN (n1) [above of = g1] {} ;
+\granja (g11) [above of = n1] {$G_{11}$} ;
+\granjaN (n2) [above of = g11] {} ;
+\granja (g2) [above of = n2] {$G_2$} ;
+\granja (g4) at ($(g1) + (30:\grande)$) {$G_4$} ;
+\granja (g3) at ($(g1) + (150:\grande)$) {$G_3$} ;
+\granja (g5) [above of = g4] {$G_5$} ;
+\granja (g10) [above of = g5] {$G_{10}$} ;
+\granja (g7) [above of = g10] {$G_7$} ;
+\granja (g6) [above of = g3] {$G_6$} ;
+\granja (g9) [above of = g6] {$G_9$} ;
+\granja (g8) [above of = g9] {$G_8$} ;
+\finfin
+\end{center}
+
+\end{probgrupal}
+
+\begin{solgrupal}
+Agregar
+\end{solgrupal}
+
+%%%%%%%%%%%%%%%%%%%%
+%%%%%%%% Problema 6
+%%%%%%%%%%%%%%%%%%%
+
+\begin{probgrupal}{}{}{}
+
+Catherina y Karla se encontraban en el vehículo de exploración \emph{Rover Cuack} deplazándose en los alrededores de la \emph{Colonia Pan de Ajo}. %
+En su búsqueda, encontraron dos sitios aptos para la cosntrucción de granjas espaciales. Tras hacer ambos diseños, Patito les informa que solo uno de %
+ellos podrá ser construido. Determine cuál de los siguientes campos de cultivo genera una \textbf{mayor cantidad} de alimentos. \emph{Los hexágonos sombreados %
+NO tienen granjas}
+
+\begin{center}
+\cultivos
+\granja (g1) {$G_1$} ;
+\granja (g2) at ($(g1) + (30:\grande)$) {$G_2$} ;
+\granja (g3) at ($(g1) + (150:\grande)$) {$G_3$} ;
+\granja (g4) [above of = g1] {$G_4$} ;
+\granja (g5) [above of = g4] {$G_5$} ;
+\finfin
+\hspace{20mm}
+\cultivos
+\granja (g1) {$G_1$} ;
+\granja (g2) [above of = g1] {$G_2$} ;
+\granja (g3) at ($(g2) + (30:\grande)$) {$G_3$} ;
+\granja (g4) at ($(g3) + (330:\grande)$) {$G_4$} ;
+\granja (g5) [below of = g4] {$G_5$} ;
+\granja (g6) at ($(g5) + (210:\grande)$) {$G_6$} ;
+\granjaN (n1) [above of = g6] {} ;
+\finfin
+\end{center}
+\end{probgrupal}
+
+\begin{solgrupal}
+Agregar
+\end{solgrupal}
+
+%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%  Problema 7
+%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{probgrupal}{}{}{}
+
+Hein ha recibido la tarea de diseñar un campo de cultivo para la colonia de \emph{Champiñón Sagrado Morado Tercero}. Tras una tarde de %
+arduo trabajo, Hein ha entregado a Patito dos diseños diferentes. Determine cuál de los siguientes campos de cultivos genera una \textbf{mayor cantidad} %
+de alimentos. \emph{Los hexágonos sombreados NO tienen granjas.}
+
+\begin{center}
+\cultivos
+\granja (g1) {$G_1$} ;
+\granja (g2) at ($(g1) + (30:\grande)$) {$G_2$} ;
+\granja (g3) at ($(g1) + (330:\grande)$) {$G_3$} ;
+\granjaN (n1) at ($(g3) + (30:\grande)$) {} ;
+\granja (g4) [above of = n1] {$G_4$} ;
+\granja (g5) [below of = n1] {$G_5$} ;
+\granja (g6) at ($(g5) + (30:\grande)$) {$G_6$} ;
+\granja (g7) [above of = g6] {$G_7$} ;
+\granja (g8) at ($(g6) + (30:\grande)$) {$G_8$} ;
+\finfin
+\hspace{20mm}
+\cultivos
+\granjaN (n1) {} ;
+\granja (g1) [above of = n1] {$G_1$} ;
+\granja (g2) [above of = g1] {$G_2$} ;
+\granja (g3) [below of = n1] {$G_3$} ;
+\granja (g4) [below of = g3] {$G_4$} ;
+\granja (g5) at ($(n1) + (30:\grande)$) {$G_5$} ;
+\granja (g6) at ($(g5) + (30:\grande)$) {$G_6$} ;
+\granja (g7) at ($(n1) + (330:\grande)$) {$G_7$} ;
+\granja (g8) at ($(g7) + (330:\grande)$) {$G_8$} ;
+\granja (g9) at ($(n1) + (210:\grande)$) {$G_9$} ;
+\granja (g10) at ($(g9) + (210:\grande)$) {$G_{10}$} ;
+\granja (g11) at ($(n1) + (150:\grande)$) {$G_{11}$} ;
+\granja (g12) at ($(g11) + (150:\grande)$) {$G_{12}$} ;
+\finfin
+\end{center}
+
+
+\end{probgrupal}
+
+
+\begin{solgrupal}
+Agregar
+\end{solgrupal}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%
+%%%%  Problema 8
+%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{probgrupal}{}{}{}
+
+Nabil y Hernán se encontraban analizando mapas de algunas zonas recientmente exploradas del planeta \emph{Champiñon}. Al hacerlo, descubireron una zona %
+de tierras muy fértiles, ideal para construir algunas granjas. Tras evaluar diferentes opciones, al llegar a su nave presentaron tres opciones a Patito. %
+Determine cuál de los siguientes campos de cultivo genera una \textbf{mayor cantidad de alimentos}. \emph{Los hexágonos sombreados NO tienen granjas}.
+
+\begin{center}
+\cultivosP
+\granja (g1) {$G_1$} ;
+\granja (g2) at ($(g1) + (30:\enano)$) {$G_2$} ;
+\granja (g3) at ($(g1) + (330:\enano)$) {$G_3$} ;
+\granjaN (n1) at ($(g3) + (30:\enano)$) {} ;
+\granja (g4) [above of = n1] {$G_4$} ;
+\granja (g5) [below of = n1] {$G_5$} ;
+\granja (g6) at ($(g5) + (30:\enano)$) {$G_6$} ;
+\granja (g7) [above of = g6] {$G_7$} ;
+\granja (g8) at ($(g6) + (30:\enano)$) {$G_8$} ;
+\finfin
+\hspace{20mm}
+\cultivosP
+\granjaN (n1) {} ;
+\granja (g1) [above of = n1] {$G_1$} ;
+\granja (g2) [above of = g1] {$G_2$} ;
+\granja (g3) [below of = n1] {$G_3$} ;
+\granja (g4) [below of = g3] {$G_4$} ;
+\granja (g5) at ($(n1) + (30:\enano)$) {$G_5$} ;
+\granja (g6) at ($(g5) + (30:\enano)$) {$G_6$} ;
+\granja (g7) at ($(n1) + (330:\enano)$) {$G_7$} ;
+\granja (g8) at ($(g7) + (330:\enano)$) {$G_8$} ;
+\granja (g9) at ($(n1) + (210:\enano)$) {$G_9$} ;
+\granja (g10) at ($(g9) + (210:\enano)$) {$G_{10}$} ;
+\granja (g11) at ($(n1) + (150:\enano)$) {$G_{11}$} ;
+\granja (g12) at ($(g11) + (150:\enano)$) {$G_{12}$} ;
+\finfin
+\hspace{20mm}
+\cultivosP
+\granja (g1) {$G_1$} ;
+\granjaN (n1) [above of = g1] {} ;
+\granjaN (n2) [above of = n1] {} ;
+\granja (g2) [above of = n2] {$G_2$} ;
+\granja (g3) at ($(g1) + (330:\enano)$) {$G_3$} ;
+\granjaN (n3) [above of = g3] {} ;
+\granja (g4) [above of = n3] {$G_4$} ;
+\granjaN (n4) [above of = g4] {} ;
+\granja (g5) [above of = n4] {$G_5$} ;
+\granja (g6) at ($(g3) + (30:\enano)$) {$G_6$} ;
+\granja (g7) [above of = g6] {$G_7$} ;
+\granjaN (n5) [above of = g7] {} ;
+\granja (g7) [above of = n5] {$G_8$} ;
+\granja (g8) at ($(g6) + (30:\enano)$) {$G_9$} ;
+\granja (g9) [above of = g8] {$G_{10}$} ;
+\granja (g10) [above of = g9] {$G_{11}$} ;
+\granja (g11) at ($(g8) + (30:\enano)$) {$G_{12}$} ;
+\finfin
+\end{center}
+
+
+\end{probgrupal}
+
+
+\begin{solgrupal}
+Agregar
+\end{solgrupal}
+
+\vspace{20mm}
+
+\noindent Finalmente, tras una larga espera llegó el día de recibir a las nuevas colonias de humanos en el planeta \emph{Champiñon}. Patito y su equipo estaban muy emocionados con esta noticia, %
+además de ogullosos de su trabajo preparando granjas espaciales para generar suficientes alimentos. Al momento de observar las naves colonia llegar y aterrizar sobre la superficie del planeta %
+\emph{Champiñon}, un nuevo inconveniente cruzó la mente de Patito. Si bien el equipo había trabajado con mucho esfuerzo en crear las granjas espaciales, así como las reglas para su funcionamiento, %
+no habían pensado en las reglas que debían seguir las colonias recién llegadas para adaptarse a las granjas. De esta forma, mientras continuaban aterrizando las naves espaciales, Patito llamó al %
+equipo académico de CMAT a una reunión de emergencia. En ella, crearon un nuevo sistema para regular y organizar el funcionamiento de las colonias.
+
+\section*{Colonias Espaciales}
+
+\noindent Designaremos a las colonias espaciales dentro del hexágono con una $\mathbf{C}$. Además, una característica de cada una de estas colonias, será el \emph{\textbf{tamaño}}. El \emph{tamaño} de una colonia espacial %
+corresponde a la \textbf{cantidad mínima de comida} que requiere la colonia para sobrevivir. Representaremos este tamaño sobre la letra $\mathbf{C}$ como se aprecia en los ejemplos inferiores.
+
+\noindent En ellos, podemos identificar una colonia de tamaño $10$. Luego dos colonias, de tamaños $10$ y $12$. Y finalmente tres colonias, de tamaños $8$, $14$, $6$ y $2$, respectivamente.
+
+\begin{center}
+\cultivos
+\granja (c1) {$\overset{\mathbf{10}}{C}$};
+\finfin
+\hspace{20mm}
+\cultivos
+\granja (c1) {$\overset{\mathbf{10}}{C}_1$} ;
+\granja (c2) at ($(c1) +  (30:\grande)$) {$\overset{\mathbf{12}}{C}_2$} ;
+\finfin
+\hspace{20mm}
+\cultivos
+\granja (c1) {$\overset{\mathbf{8}}{C}_1$} ;
+\granja (c2) at ($(c1) + (30:\grande)$) {$\overset{\mathbf{14}}{C}_2$} ;
+\granja (c3) at ($(c1) + (330:\grande)$) {$\overset{\mathbf{6}}{C}_3$} ;
+\granja (c4) at ($(c3) + (30:\grande)$) {$\overset{\mathbf{2}}{C}_4$} ;
+\finfin
+\end{center}
+
+\vspace{10mm}
+
+\noindent De esta forma, diremos que una colonia se encuentra \emph{\textbf{abastecida}}, si recibe la cantidad \textbf{exacta} de alimento que pide su \emph{tamaño}. Para ello, Patito y su equipo definieron una serie de reglas %
+que determinan cómo se distribuye el alimento generado por las granjas espaciales entre las colonias.
+
+\vspace{10mm}
+
+\subsection*{Distribución de alimentos; Reglas}
+
+\begin{itemize}
+\item Cada \emph{colonia espacial} puede recibir alimentos \textbf{única y exclusivamente} de sus granjas espaciales \emph{\textbf{adyacentes}}.
+\item La cantidad \emph{\textbf{mínima}} de alimento que podrá recibir una \emph{colonia espacial}, es igual a su \emph{tamaño}
+\end{itemize}
