@@ -22,7 +22,17 @@
 \pgfplotsset{compat=1.18} 
 \usepackage{makecell}
 \usepackage{tikz}
-\usetikzlibrary{automata, arrows, positioning, calc}
+\usetikzlibrary{
+    shapes.geometric,
+    positioning,
+    calc,
+    automata,
+    arrows
+    }
+\usepackage{epstopdf}
+\usepackage{subcation}
+\renewcommand{\thesubfigure}{}
+\captionsetup{subfigure}{labelformat=empty}
 \usepackage{ifthen}
 \usepackage{enumitem}
 \usepackage{parskip}
@@ -32,3 +42,57 @@
 \geometry{a4paper, left=15mm, right=15mm, top=20mm, bottom=30mm}
 \usepackage[T1]{fontenc}
 \renewcommand{\thesubfigure}{\relax}  % Do nothing for the counter »subfigure«
+
+
+%%%%%%%%%  Ambientes útiles para abreviar la escritura al dibujar los nodos en tikz
+
+\newenvironment{RedC}{%
+    \begin{center}%
+    \begin{tikzpicture}[
+        node distance = {10mm},
+        main/.style = {
+            draw,
+            circle,
+            minimum size = 5mm,
+            inner sep = 0pt,
+            very thick
+        }
+    ]%
+}{%
+    \end{tikzpicture}%
+    \end{center}
+}
+
+\newenvironment{RedNC}{%
+    \begin{tikzpicture}[
+        node distance = {10mm},
+        main/.style = {
+            draw,
+            circle,
+            minimun size = 5mm,
+            inner sep = 0pt,
+            very thick
+        }
+    ]%
+}{%
+    \end{tikzpicture}
+}
+
+\newcommand*{\punto}{\node[main]}
+
+
+\title{Ficha de prueba}
+\author{PA}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{RedC}
+    \punto (p1) {};
+\end{RedC}
+
+
+
+\end{document}
