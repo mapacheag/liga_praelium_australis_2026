@@ -1,1 +1,39 @@
 .vscode/
+## Documentos temporales de latex
+*.aux
+*.log
+*.out
+*.toc
+*.lof
+*.lot
+*.lfs
+*.fdb_latexmk
+*.synctex.gz
+*.synctex(busy)
+
+# bibliografia y citas
+*.bbl
+*.bcf
+*.blg
+*.run.xml
+
+#indices
+*.idx
+*.ind
+*.ilg
+*.glo
+*.gls
+*.glg
+
+#formatos
+*.dvi
+*.ps
+*.nav
+*.snm
+*.vrb
+
+# temporales de editores de texto
+*~
+.#*
+*.swp
+.DS_Store

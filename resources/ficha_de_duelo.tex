@@ -3,6 +3,8 @@
 \usepackage[spanish, es-tabla]{babel}
 \usepackage{amsmath}
 \usepackage{amssymb}
+\usepackage{siunitx}
+\usepackage{csquotes}
 \usepackage{verbatim}
 \usepackage{dirtree}
 \usepackage{dsfont}
@@ -12,7 +14,6 @@
 \usepackage{multirow}
 \usepackage{multicol}
 \usepackage{float}
-\usepackage{gensymb}
 \usepackage{caption}
 \usepackage{hyperref}
 \usepackage{ragged2e}
@@ -30,9 +31,9 @@
     arrows
     }
 \usepackage{epstopdf}
-\usepackage{subcation}
+%\usepackage{subcaption}
 \renewcommand{\thesubfigure}{}
-\captionsetup{subfigure}{labelformat=empty}
+%\captionsetup{subfigure}{labelformat=empty}
 \usepackage{ifthen}
 \usepackage{enumitem}
 \usepackage{parskip}
@@ -49,11 +50,11 @@
 \newenvironment{RedC}{%
     \begin{center}%
     \begin{tikzpicture}[
-        node distance = {10mm},
+        node distance = {5mm},
         main/.style = {
             draw,
             circle,
-            minimum size = 5mm,
+            minimum size = 4mm,
             inner sep = 0pt,
             very thick
         }
@@ -65,11 +66,11 @@
 
 \newenvironment{RedNC}{%
     \begin{tikzpicture}[
-        node distance = {10mm},
+        node distance = {5mm},
         main/.style = {
             draw,
             circle,
-            minimun size = 5mm,
+            minimum size = 4mm,
             inner sep = 0pt,
             very thick
         }
