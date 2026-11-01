@@ -87,24 +87,28 @@
 
 \noindent
 %encabezado, mitad izquierda
-\begin{minipage}{50mm}
-    \huge{\textbf{Ficha de Duelo}} \\
-    \Large{\textbf{Fecha X}} \\
-    \Large{Duelo Y}
-\end{minipage}
-\hspace{50mm}
+\begin{minipage}[t]{0.5\textwidth}
+    {\huge\textbf{Ficha de Duelo}}\\[2pt]
+    {\Large\textbf{Fecha X}}\\[2pt]
+    {\Large Duelo Y}
+\end{minipage}%
+\hfill
 %encabezado, mitad derecha
-\begin{minipage}{50mm}
+\begin{minipage}[t]{0.45\textwidth}
+    \raggedleft
     % texto acoplado al logo
-    \begin{minipage}{25mm}
-        \textbf{Liga Interna de} \\
-        \textbf{Espada Larga} \\
-        Edición 2026 \\
-        Praelium Australis
-    \end{minipage}
+    \begin{minipage}[t]{0.65\textwidth}
+        \raggedleft
+        \textbf{Liga Interna de}\\[-2pt]
+        \textbf{Espada Larga}\\[1pt]
+        {\small Edición 2026}\\[1pt]
+        {\small Praelium Australis}
+    \end{minipage}%
+    \hspace{2mm}
     % logo
-    \begin{minipage}{25mm}
-        \includegraphics[scale=0.15]{./logo_PA.png}
+    \begin{minipage}[t]{0.30\textwidth}
+        \vspace{0pt}
+        \includegraphics[width=\textwidth]{./logo_PA.png}
     \end{minipage}
 \end{minipage}
 
