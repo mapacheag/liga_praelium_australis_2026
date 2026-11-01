@@ -40,7 +40,7 @@
 \usepackage{geometry}
 \usepackage{graphicx}
 \usepackage{fancyhdr}
-\geometry{a4paper, left=15mm, right=15mm, top=20mm, bottom=30mm}
+\geometry{a4paper, left=15mm, right=15mm, top=10mm, bottom=30mm}
 \usepackage[T1]{fontenc}
 \renewcommand{\thesubfigure}{\relax}  % Do nothing for the counter »subfigure«
 
@@ -81,19 +81,32 @@
 
 \newcommand*{\punto}{\node[main]}
 
-
-\title{Ficha de prueba}
-\author{PA}
-\date{\today}
-
+%%% Documento
 \begin{document}
 
-\maketitle
 
-\begin{RedC}
-    \punto (p1) {};
-\end{RedC}
-
+\noindent
+%encabezado, mitad izquierda
+\begin{minipage}{50mm}
+    \huge{\textbf{Ficha de Duelo}} \\
+    \Large{\textbf{Fecha X}} \\
+    \Large{Duelo Y}
+\end{minipage}
+\hspace{50mm}
+%encabezado, mitad derecha
+\begin{minipage}{50mm}
+    % texto acoplado al logo
+    \begin{minipage}{25mm}
+        \textbf{Liga Interna de} \\
+        \textbf{Espada Larga} \\
+        Edición 2026 \\
+        Praelium Australis
+    \end{minipage}
+    % logo
+    \begin{minipage}{25mm}
+        \includegraphics[scale=0.15]{./logo_PA.png}
+    \end{minipage}
+\end{minipage}
 
 
 \end{document}
