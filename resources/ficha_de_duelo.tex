@@ -5,6 +5,7 @@
 \usepackage{amssymb}
 \usepackage{siunitx}
 \usepackage{csquotes}
+\usepackage{tabularx}
 \usepackage{verbatim}
 \usepackage{dirtree}
 \usepackage{dsfont}
@@ -40,7 +41,7 @@
 \usepackage{geometry}
 \usepackage{graphicx}
 \usepackage{fancyhdr}
-\geometry{a4paper, left=15mm, right=15mm, top=10mm, bottom=30mm}
+\geometry{a4paper, left=15mm, right=15mm, top=10mm, bottom=5mm}
 \usepackage[T1]{fontenc}
 \renewcommand{\thesubfigure}{\relax}  % Do nothing for the counter »subfigure«
 
@@ -66,11 +67,26 @@
 
 \newenvironment{RedNC}{%
     \begin{tikzpicture}[
-        node distance = {5mm},
+        node distance = {5.5mm},
         main/.style = {
             draw,
             circle,
-            minimum size = 4mm,
+            minimum size = 3.5mm,
+            inner sep = 0pt,
+            very thick
+        }
+    ]%
+}{%
+    \end{tikzpicture}
+}
+
+\newenvironment{RedPNC}{%
+    \begin{tikzpicture}[
+        node distance = {4mm},
+        main/.style = {
+            draw,
+            circle,
+            minimum size = 2.5mm,
             inner sep = 0pt,
             very thick
         }
@@ -81,6 +97,18 @@
 
 \newcommand*{\punto}{\node[main]}
 
+\newcolumntype{C}{>{\centering\arraybackslash}X}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\competidorA}{Nombre Competidor A}
+\newcommand{\competidorB}{Nombre Competidor B}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
 %%% Documento
 \begin{document}
 
@@ -88,29 +116,378 @@
 \noindent
 %encabezado, mitad izquierda
 \begin{minipage}[t]{0.5\textwidth}
-    {\huge\textbf{Ficha de Duelo}}\\[2pt]
-    {\Large\textbf{Fecha X}}\\[2pt]
-    {\Large Duelo Y}
+    %logo
+    \begin{minipage}[t]{0.30\textwidth}
+        \vspace{-7mm}
+        \includegraphics[width=\textwidth]{./logo_PA.png}
+    \end{minipage}%
+    \hspace{2mm}
+    %texto de inicio
+    \begin{minipage}[t]{0.65\textwidth}
+        {\Huge\textbf{Ficha de Duelo}}\\[6pt]
+        {\LARGE\textbf{Fecha X}}\\[5pt]
+        {\Large Duelo Y}
+    \end{minipage}
 \end{minipage}%
 \hfill
 %encabezado, mitad derecha
 \begin{minipage}[t]{0.45\textwidth}
     \raggedleft
-    % texto acoplado al logo
-    \begin{minipage}[t]{0.65\textwidth}
-        \raggedleft
-        \textbf{Liga Interna de}\\[-2pt]
-        \textbf{Espada Larga}\\[1pt]
-        {\small Edición 2026}\\[1pt]
-        {\small Praelium Australis}
-    \end{minipage}%
-    \hspace{2mm}
-    % logo
-    \begin{minipage}[t]{0.30\textwidth}
-        \vspace{0pt}
-        \includegraphics[width=\textwidth]{./logo_PA.png}
-    \end{minipage}
+    \vspace{-5mm}
+    {\large\textbf{Liga Interna de}}\\[1pt]
+    {\large\textbf{Espada Larga}}\\[1pt]
+    {\large Edición 2026}\\[-0.5pt]
+    {\large Praelium Australis}
 \end{minipage}
+
+\vspace{10mm}
+
+{\Huge\textbf{Arena X}}
+
+\begin{center}
+    \begin{tabularx}{\textwidth}{| >{\centering\arraybackslash}p{100mm} | C | C |}\hline
+        \vspace{3mm} {\LARGE\textbf{Competidores}} & \vspace{3mm} {\Large\textbf{Color}} & \vspace{3mm} {\Large\textbf{Puntos}} \\[30pt] \hline
+        \vspace{3mm} \competidorA & \vspace{3mm}  & \cellcolor{lightgray} \vspace{3mm}  \\[25pt] \hline
+        \vspace{3mm} \competidorB & \vspace{3mm}  & \cellcolor{lightgray} \vspace{3mm} \\[25pt] \hline
+    \end{tabularx}
+\end{center}
+
+{\LARGE\textbf{Dobles}}%
+\hspace{2mm}%
+\begin{RedNC}
+    \punto (p1) {};
+    \punto (p2) [right of = p1] {};
+    \punto (p3) [right of = p2] {};
+    \punto (p4) [right of = p3] {};
+    \punto (p5) [right of = p4] {};
+    \punto (p6) [right of = p5] {};
+    \punto (p7) [right of = p6] {};
+    \punto (p8) [right of = p7] {};
+    \punto (p9) [right of = p8] {};
+    \punto (p10) [right of = p9] {};
+    \punto (p11) [right of = p10] {};
+    \punto (p12) [right of = p11] {};
+    \punto (p13) [right of = p12] {};
+    \punto (p14) [right of = p13] {};
+    \punto (p15) [right of = p14] {};
+    \punto (p16) [right of = p15] {};
+    \punto (p17) [right of = p16] {};
+    \punto (p18) [right of = p17] {};
+\end{RedNC}
+
+\vspace{3mm}
+
+\centering
+\begin{tabularx}{\textwidth}{|X|X|}\hline
+    \vspace{1mm}{\large\textbf{\competidorA}} & \vspace{1mm}{\large\textbf{\competidorB}}\\[15pt]
+    \textbf{Sanciones}%
+    \begin{itemize}
+        \item[$\dagger$] \textbf{Advertencias}\hfill%
+        \begin{RedPNC}
+            \punto (p1) {} ;
+            \punto (p2) [right of = p1] {} ;
+            \punto (p3) [right of = p2] {} ;
+            \punto (p4) [right of = p3] {} ;
+            \punto (p5) [right of = p4] {} ;
+            \punto (p6) [right of = p5] {} ;
+        \end{RedPNC}
+        \item[$\dagger$] \textbf{Falta Leve}\hfill%
+        \begin{RedPNC}
+            \punto (p1) {} ;
+            \punto (p2) [right of = p1] {} ;
+        \end{RedPNC}
+        \item[$\dagger$] \textbf{Falta Grave}\hfill%
+        \begin{RedPNC}
+            \punto (p1) {} ;
+        \end{RedPNC}
+    \end{itemize} %
+    & %
+    \textbf{Sanciones}%
+    \begin{itemize}
+        \item[$\dagger$] \textbf{Advertencias}\hfill%
+        \begin{RedPNC}
+            \punto (p1) {} ;
+            \punto (p2) [right of = p1] {} ;
+            \punto (p3) [right of = p2] {} ;
+            \punto (p4) [right of = p3] {} ;
+            \punto (p5) [right of = p4] {} ;
+            \punto (p6) [right of = p5] {} ;
+        \end{RedPNC}
+        \item[$\dagger$] \textbf{Falta Leve}\hfill%
+        \begin{RedPNC}
+            \punto (p1) {} ;
+            \punto (p2) [right of = p1] {} ;
+        \end{RedPNC}
+        \item[$\dagger$] \textbf{Falta Grave}\hfill%
+        \begin{RedPNC}
+            \punto (p1) {} ;
+        \end{RedPNC}
+    \end{itemize} \\[10pt] \hline
+    \textbf{Comentarios} & \textbf{Comentarios} \\[60pt] \hline
+    \vspace{0.5mm}\textbf{Intercambios [objetivos]} & \vspace{0.5mm}\textbf{Intercambios [objetivos]} \\[10pt]
+    \textbf{Careta}%
+    \begin{itemize}
+        \item[$\dagger$] \textbf{Golpe}\hfill%
+        \begin{RedPNC}
+            \punto (p1) {} ;
+            \punto (p2) [right of = p1] {} ;
+            \punto (p3) [right of = p2] {} ;
+            \punto (p4) [right of = p3] {} ;
+            \punto (p5) [right of = p4] {} ;
+        \end{RedPNC}
+        \item[$\dagger$] \textbf{Corte}\hfill%
+        \begin{RedPNC}
+            \punto (p1) {} ;
+            \punto (p2) [right of = p1] {} ;
+            \punto (p3) [right of = p2] {} ;
+            \punto (p4) [right of = p3] {} ;
+            \punto (p5) [right of = p4] {} ;
+        \end{RedPNC}
+        \item[$\dagger$] \textbf{Estocada}\hfill%
+        \begin{RedPNC}
+            \punto (p1) {} ;
+            \punto (p2) [right of = p1] {} ;
+            \punto (p3) [right of = p2] {} ;
+            \punto (p4) [right of = p3] {} ;
+            \punto (p5) [right of = p4] {} ;
+        \end{RedPNC}
+        \item[$\dagger$] \textbf{Golpe de pomo}\hfill%
+        \begin{RedPNC}
+            \punto (p1) {} ;
+            \punto (p2) [right of = p1] {} ;
+            \punto (p3) [right of = p2] {} ;
+            \punto (p4) [right of = p3] {} ;
+            \punto (p5) [right of = p4] {} ;
+        \end{RedPNC}
+    \end{itemize} %
+    & %
+    \textbf{Careta}%
+    \begin{itemize}
+        \item[$\dagger$] \textbf{Golpe}\hfill%
+        \begin{RedPNC}
+            \punto (p1) {} ;
+            \punto (p2) [right of = p1] {} ;
+            \punto (p3) [right of = p2] {} ;
+            \punto (p4) [right of = p3] {} ;
+            \punto (p5) [right of = p4] {} ;
+        \end{RedPNC}
+        \item[$\dagger$] \textbf{Corte}\hfill%
+        \begin{RedPNC}
+            \punto (p1) {} ;
+            \punto (p2) [right of = p1] {} ;
+            \punto (p3) [right of = p2] {} ;
+            \punto (p4) [right of = p3] {} ;
+            \punto (p5) [right of = p4] {} ;
+        \end{RedPNC}
+        \item[$\dagger$] \textbf{Estocada}\hfill%
+        \begin{RedPNC}
+            \punto (p1) {} ;
+            \punto (p2) [right of = p1] {} ;
+            \punto (p3) [right of = p2] {} ;
+            \punto (p4) [right of = p3] {} ;
+            \punto (p5) [right of = p4] {} ;
+        \end{RedPNC}
+        \item[$\dagger$] \textbf{Golpe de pomo}\hfill%
+        \begin{RedPNC}
+            \punto (p1) {} ;
+            \punto (p2) [right of = p1] {} ;
+            \punto (p3) [right of = p2] {} ;
+            \punto (p4) [right of = p3] {} ;
+            \punto (p5) [right of = p4] {} ;
+        \end{RedPNC}
+    \end{itemize} \\[10pt]
+    \textbf{Torso}%
+    \begin{itemize}
+        \item[$\dagger$] \textbf{Golpe}\hfill%
+        \begin{RedPNC}
+            \punto (p1) {} ;
+            \punto (p2) [right of = p1] {} ;
+            \punto (p3) [right of = p2] {} ;
+            \punto (p4) [right of = p3] {} ;
+            \punto (p5) [right of = p4] {} ;
+        \end{RedPNC}
+        \item[$\dagger$] \textbf{Corte}\hfill%
+        \begin{RedPNC}
+            \punto (p1) {} ;
+            \punto (p2) [right of = p1] {} ;
+            \punto (p3) [right of = p2] {} ;
+            \punto (p4) [right of = p3] {} ;
+            \punto (p5) [right of = p4] {} ;
+        \end{RedPNC}
+        \item[$\dagger$] \textbf{Estocada}\hfill%
+        \begin{RedPNC}
+            \punto (p1) {} ;
+            \punto (p2) [right of = p1] {} ;
+            \punto (p3) [right of = p2] {} ;
+            \punto (p4) [right of = p3] {} ;
+            \punto (p5) [right of = p4] {} ;
+        \end{RedPNC}
+    \end{itemize} %
+    & %
+        \textbf{Torso}%
+    \begin{itemize}
+        \item[$\dagger$] \textbf{Golpe}\hfill%
+        \begin{RedPNC}
+            \punto (p1) {} ;
+            \punto (p2) [right of = p1] {} ;
+            \punto (p3) [right of = p2] {} ;
+            \punto (p4) [right of = p3] {} ;
+            \punto (p5) [right of = p4] {} ;
+        \end{RedPNC}
+        \item[$\dagger$] \textbf{Corte}\hfill%
+        \begin{RedPNC}
+            \punto (p1) {} ;
+            \punto (p2) [right of = p1] {} ;
+            \punto (p3) [right of = p2] {} ;
+            \punto (p4) [right of = p3] {} ;
+            \punto (p5) [right of = p4] {} ;
+        \end{RedPNC}
+        \item[$\dagger$] \textbf{Estocada}\hfill%
+        \begin{RedPNC}
+            \punto (p1) {} ;
+            \punto (p2) [right of = p1] {} ;
+            \punto (p3) [right of = p2] {} ;
+            \punto (p4) [right of = p3] {} ;
+            \punto (p5) [right of = p4] {} ;
+        \end{RedPNC}
+    \end{itemize}\\[10pt]
+    \textbf{Extremidades}%
+    \begin{itemize}
+        \item[$\dagger$] \textbf{Golpe}\hfill%
+        \begin{RedPNC}
+            \punto (p1) {} ;
+            \punto (p2) [right of = p1] {} ;
+            \punto (p3) [right of = p2] {} ;
+            \punto (p4) [right of = p3] {} ;
+            \punto (p5) [right of = p4] {} ;
+        \end{RedPNC}
+        \item[$\dagger$] \textbf{Corte}\hfill%
+        \begin{RedPNC}
+            \punto (p1) {} ;
+            \punto (p2) [right of = p1] {} ;
+            \punto (p3) [right of = p2] {} ;
+            \punto (p4) [right of = p3] {} ;
+            \punto (p5) [right of = p4] {} ;
+        \end{RedPNC}
+        \item[$\dagger$] \textbf{Estocada}\hfill%
+        \begin{RedPNC}
+            \punto (p1) {} ;
+            \punto (p2) [right of = p1] {} ;
+            \punto (p3) [right of = p2] {} ;
+            \punto (p4) [right of = p3] {} ;
+            \punto (p5) [right of = p4] {} ;
+        \end{RedPNC}
+    \end{itemize} %
+    & %
+    \textbf{Extremidades}%
+    \begin{itemize}
+        \item[$\dagger$] \textbf{Golpe}\hfill%
+        \begin{RedPNC}
+            \punto (p1) {} ;
+            \punto (p2) [right of = p1] {} ;
+            \punto (p3) [right of = p2] {} ;
+            \punto (p4) [right of = p3] {} ;
+            \punto (p5) [right of = p4] {} ;
+        \end{RedPNC}
+        \item[$\dagger$] \textbf{Corte}\hfill%
+        \begin{RedPNC}
+            \punto (p1) {} ;
+            \punto (p2) [right of = p1] {} ;
+            \punto (p3) [right of = p2] {} ;
+            \punto (p4) [right of = p3] {} ;
+            \punto (p5) [right of = p4] {} ;
+        \end{RedPNC}
+        \item[$\dagger$] \textbf{Estocada}\hfill%
+        \begin{RedPNC}
+            \punto (p1) {} ;
+            \punto (p2) [right of = p1] {} ;
+            \punto (p3) [right of = p2] {} ;
+            \punto (p4) [right of = p3] {} ;
+            \punto (p5) [right of = p4] {} ;
+        \end{RedPNC}
+    \end{itemize}\\[10pt]
+    \textbf{Acciones de Juego Corto}%
+    \begin{itemize}
+        \item[$\dagger$] \textbf{Control con amenaza}\hfill%
+        \begin{RedPNC}
+            \punto (p1) {} ;
+            \punto (p2) [right of = p1] {} ;
+            \punto (p3) [right of = p2] {} ;
+            \punto (p4) [right of = p3] {} ;
+            \punto (p5) [right of = p4] {} ;
+        \end{RedPNC}
+        \item[$\dagger$] \textbf{Derribo}\hfill%
+        \begin{RedPNC}
+            \punto (p1) {} ;
+            \punto (p2) [right of = p1] {} ;
+            \punto (p3) [right of = p2] {} ;
+            \punto (p4) [right of = p3] {} ;
+            \punto (p5) [right of = p4] {} ;
+        \end{RedPNC}
+        \item[$\dagger$] \textbf{Desarme}\hfill%
+        \begin{RedPNC}
+            \punto (p1) {} ;
+            \punto (p2) [right of = p1] {} ;
+            \punto (p3) [right of = p2] {} ;
+            \punto (p4) [right of = p3] {} ;
+            \punto (p5) [right of = p4] {} ;
+        \end{RedPNC}
+    \end{itemize} %
+    & %
+        \textbf{Acciones de Juego Corto}%
+    \begin{itemize}
+        \item[$\dagger$] \textbf{Control con amenaza}\hfill%
+        \begin{RedPNC}
+            \punto (p1) {} ;
+            \punto (p2) [right of = p1] {} ;
+            \punto (p3) [right of = p2] {} ;
+            \punto (p4) [right of = p3] {} ;
+            \punto (p5) [right of = p4] {} ;
+        \end{RedPNC}
+        \item[$\dagger$] \textbf{Derribo}\hfill%
+        \begin{RedPNC}
+            \punto (p1) {} ;
+            \punto (p2) [right of = p1] {} ;
+            \punto (p3) [right of = p2] {} ;
+            \punto (p4) [right of = p3] {} ;
+            \punto (p5) [right of = p4] {} ;
+        \end{RedPNC}
+        \item[$\dagger$] \textbf{Desarme}\hfill%
+        \begin{RedPNC}
+            \punto (p1) {} ;
+            \punto (p2) [right of = p1] {} ;
+            \punto (p3) [right of = p2] {} ;
+            \punto (p4) [right of = p3] {} ;
+            \punto (p5) [right of = p4] {} ;
+        \end{RedPNC}
+    \end{itemize}\\[10pt]\hline
+    \vspace{0.05mm}\textbf{Salida del Perímetro}\hfill%
+    \begin{RedPNC}
+        \punto (p1) {} ;
+        \punto (p2) [right of = p1] {} ;
+        \punto (p3) [right of = p2] {} ;
+        \punto (p4) [right of = p3] {} ;
+        \punto (p5) [right of = p4] {} ;
+    \end{RedPNC} %
+    & %
+        \vspace{0.05mm}\textbf{Salida del Perímetro}\hfill%
+    \begin{RedPNC}
+        \punto (p1) {} ;
+        \punto (p2) [right of = p1] {} ;
+        \punto (p3) [right of = p2] {} ;
+        \punto (p4) [right of = p3] {} ;
+        \punto (p5) [right of = p4] {} ;
+    \end{RedPNC}\\[10pt]
+    {\large\textbf{W.O}}\hfill%
+    \begin{RedPNC}
+        \punto (p1) {} ;
+    \end{RedPNC} %
+    & %
+    {\large\textbf{W.O}}\hfill%
+    \begin{RedPNC}
+        \punto (p1) {} ;
+    \end{RedPNC}\\[10pt]\hline
+\end{tabularx}
 
 
 \end{document}

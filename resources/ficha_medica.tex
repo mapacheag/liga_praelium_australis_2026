@@ -1,0 +1,180 @@
+\documentclass[10pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish, es-tabla]{babel}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{siunitx}
+\usepackage{csquotes}
+\usepackage{tabularx}
+\usepackage{verbatim}
+\usepackage{dirtree}
+\usepackage{dsfont}
+\usepackage{biblatex}
+\usepackage[table, dvipsnames]{xcolor}
+\usepackage[most]{tcolorbox}
+\usepackage{multirow}
+\usepackage{multicol}
+\usepackage{float}
+\usepackage{caption}
+\usepackage{hyperref}
+\usepackage{ragged2e}
+\usepackage{wrapfig}
+\usepackage[labelformat=simple]{subfig}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18} 
+\usepackage{makecell}
+\usepackage{tikz}
+\usetikzlibrary{
+    shapes.geometric,
+    positioning,
+    calc,
+    automata,
+    arrows
+    }
+\usepackage{epstopdf}
+%\usepackage{subcaption}
+\renewcommand{\thesubfigure}{}
+%\captionsetup{subfigure}{labelformat=empty}
+\usepackage{ifthen}
+\usepackage{enumitem}
+\usepackage{parskip}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{fancyhdr}
+\geometry{a4paper, left=15mm, right=15mm, top=10mm, bottom=5mm}
+\usepackage[T1]{fontenc}
+\renewcommand{\thesubfigure}{\relax}  % Do nothing for the counter »subfigure«
+
+
+%%%%%%%%%  Ambientes útiles para abreviar la escritura al dibujar los nodos en tikz
+
+\newenvironment{RedC}{%
+    \begin{center}%
+    \begin{tikzpicture}[
+        node distance = {5mm},
+        main/.style = {
+            draw,
+            circle,
+            minimum size = 4mm,
+            inner sep = 0pt,
+            very thick
+        }
+    ]%
+}{%
+    \end{tikzpicture}%
+    \end{center}
+}
+
+\newenvironment{RedNC}{%
+    \begin{tikzpicture}[
+        node distance = {5.5mm},
+        main/.style = {
+            draw,
+            circle,
+            minimum size = 3.5mm,
+            inner sep = 0pt,
+            very thick
+        }
+    ]%
+}{%
+    \end{tikzpicture}
+}
+
+\newenvironment{RedPNC}{%
+    \begin{tikzpicture}[
+        node distance = {4mm},
+        main/.style = {
+            draw,
+            circle,
+            minimum size = 2.5mm,
+            inner sep = 0pt,
+            very thick
+        }
+    ]%
+}{%
+    \end{tikzpicture}
+}
+
+\newcommand*{\punto}{\node[main]}
+
+\newcolumntype{C}{>{\centering\arraybackslash}X}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\competidorA}{Nombre Competidor A}
+\newcommand{\competidorB}{Nombre Competidor B}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+\begin{document}
+
+
+\noindent
+%encabezado, mitad izquierda
+\begin{minipage}[t]{0.5\textwidth}
+    %logo
+    \begin{minipage}[t]{0.30\textwidth}
+        \vspace{-7mm}
+        \includegraphics[width=\textwidth]{./logo_PA.png}
+    \end{minipage}%
+    \hspace{2mm}
+    %texto de inicio
+    \begin{minipage}[t]{0.65\textwidth}
+        {\Huge\textbf{Ficha Médica}}\\[6pt]
+        {\Large\textbf{Lesiones y}}\\[5pt]
+        {\Large\textbf{Traumatismos}}
+    \end{minipage}
+\end{minipage}%
+\hfill
+%encabezado, mitad derecha
+\begin{minipage}[t]{0.45\textwidth}
+    \raggedleft
+    \vspace{-5mm}
+    {\large\textbf{Liga Interna de}}\\[1pt]
+    {\large\textbf{Espada Larga}}\\[1pt]
+    {\large Edición 2026}\\[-0.5pt]
+    {\large Praelium Australis}
+\end{minipage}
+
+\vspace{5mm}
+
+\begin{center}
+    \textcolor{gray}{\textit{Rellenar en caso de lesión o traumatismo sufrido por uno o más participantes del duelo}} \\
+    \textcolor{gray}{\textit{Esta hoja deberá ser entregada a la persona afectada o el personal médico en caso de ser trasladada a un centro de asistencia}}
+\end{center}
+
+\vspace{5mm}
+
+\begin{tabularx}{\textwidth}{X X}
+    {\large\textbf{Identidad de la persona lesionada}} &  \\[20pt]
+    \textbf{Nombre:}\hspace{1.5mm}\rule[0pt]{150mm}{1pt} & \\[10pt]
+    \textbf{Rol en el Duelo} & \\[5pt]
+    Competidor:\hspace{2mm}%
+    \begin{RedPNC}
+        \punto (p1) {} ;
+    \end{RedPNC}%
+    \hspace{4mm}%
+    Juez/Árbitro:\hspace{2mm}%
+    \begin{RedPNC}
+        \punto (p1) {} ;
+    \end{RedPNC}%
+    \hspace{4mm}
+    Espectador:\hspace{2mm}%
+    \begin{RedPNC}
+        \punto (p1) {} ;
+    \end{RedPNC}
+\end{tabularx}
+
+\begin{tabularx}{\textwidth}{| X | X |}\hline
+    \vspace{1mm}{\large\textbf{Zona afectada}} & \vspace{1mm}{\large\textbf{Descripción}}\\[10pt]
+    \begin{itemize}
+        \item[$\dagger$] Cabeza
+    \end{itemize}
+\end{tabularx}
+
+
+
+\end{document}
