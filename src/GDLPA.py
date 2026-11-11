@@ -47,6 +47,7 @@
 import pandas as pd
 import random as rd
 import datetime
+import pickle
 
 #####################################
 
@@ -56,8 +57,10 @@ import datetime
 ### Clase Esgrimista, envuelve todas su instancias particulares, como el nombre, sus puntajes, sanciones y demás
 
 class Esgrimista:
-    def __init__(self, nombre: str):
+    def __init__(self, nombre: str, rango: str, asistencia: float):
         self.nombre = nombre
+        self.rango = rango
+        self.asistencia = asistencia
         self.puntaje = []
         ## Los puntajes ingresados tendrán la forma P_i = [x,y,z,t]
         ## Donde P_i es el puntaje del iésimo duelo del esgrimista
@@ -72,20 +75,32 @@ class Esgrimista:
         ## y' corresponde a las sanciones graves que hayan sido registradas
 
     @property
-    def puntaje_total(self) -> int:
-        return sum(duelo[0] for duelo in self.puntaje)
+    def duelos_peleados(self) -> int:
+        return len(self.puntaje)
 
     @property
-    def dobles_total(self) -> int:
-        return sum(duelo[3] for duelo in self.puntaje)
+    def puntaje_total(self) -> float:
+        if self.duelos_peleados == 0:
+            return 0.0
+        return sum(duelo[0] for duelo in self.puntaje) / self.duelos_peleados
 
     @property
-    def intercambios_favorables(self) -> int:
-        return sum(duelo[1] for duelo in self.puntaje)
+    def dobles_total(self) -> float:
+        if self.duelos_peleados == 0:
+            return 0.0
+        return sum(duelo[3] for duelo in self.puntaje) / self.duelos_peleados
 
     @property
-    def intercambios_desfavorables(self) -> int:
-        return sum(duelo[2] for duelo in self.puntaje)
+    def intercambios_favorables(self) -> float:
+        if self.duelos_peleados == 0:
+            return 0.0
+        return sum(duelo[1] for duelo in self.puntaje) / self.duelos_peleados
+
+    @property
+    def intercambios_desfavorables(self) -> float:
+        if self.duelos_peleados == 0:
+            return 0.0
+        return sum(duelo[2] for duelo in self.puntaje) / self.duelos_peleados
 
     @property
     def intercambios_diferencia(self) -> int:
@@ -182,16 +197,23 @@ class ConfiguracionLiga:
         self.fixture_de_liga = {}
         self.duelos_calendarizados = 0
 
-    ## Función para crear esgrimistas a partir de un dataframe o una lista
-    def obtener_participantes(self, participantes_lista: list = None, participantes_df = None) -> None:
-        if participantes_lista is None and participantes_df is None:
-            raise ValueError(f"No hay Liga más fácil de organizar que aquella que no tiene participantes...\nPorque no los tiene... cierto?\nDebes ingresar los participantes mediante una lista o un DataFrame")
+    ## Función para crear esgrimistas a partir de un dataframe o una lista (AHORA, es solamente mediante un DF)
+    def obtener_participantes(self, participantes_df = None) -> None:
         if participantes_df is None:
-            for esgrimista in participantes_lista:
-                self.participantes.append(Esgrimista(esgrimista))
-        else:
-            for esgrimista in participantes_df['Nombres']:
-                self.participantes.append(Esgrimista(esgrimista))
+            raise ValueError(f"No hay Liga más fácil de organizar que aquella que no tiene participantes...\nPorque no los tiene... cierto?\nDebes ingresar los participantes mediante un DataFrame")
+        for _, fila in participantes_df.iterrows():
+            nombre = fila['Nombres']
+            rango = fila['Curso o Rango Marcial']
+            asistencia = fila['Asistencia']
+            self. participantes.append(Esgrimista(nombre, rango, asistencia))
+
+    def actualizar_asistencia(self, participantes_df: pd.DataFrame = None) -> None:
+        if participantes_df is None:
+            raise ValueError(f"Se debe ingresar un DataFrame con los datos de asistencia actualizados")
+        mapeo_asistencia = dict(zip(participantes_df['Nombres'], participantes_df['Asistencia']))
+        for esgrimista in self.participantes:
+            if esgrimista.nombre in mapeo_asistencia:
+                esgrimista.asistencia = mapeo_asistencia[esgrimista.nombre]
 
     @property
     def cantidad_total_participantes(self) -> int:
@@ -244,28 +266,76 @@ class ConfiguracionLiga:
                 })
         return pd.DataFrame(df_fixture_fechas_input_data)
 
-    ### Construcción de la tabla de posiciones (dinámica) [No, no es dinámica de excel, no sé qué son las tablas dinámicas de excel lamentablemente]
+    def reagendar_duelo(self, nombre_a: str, nombre_b: str, nueva_fecha: str) -> None:
+        if nueva_fecha not in self.fechas_liga:
+            raise ValueError(f"La fecha '{nueva_fecha}' no existe en el calendario.")
+        duelo_encontrado = None
+        fecha_original = None
 
+        for fecha, lista_duelos in self.fixture_de_liga.items():
+            for duelo in lista_duelos:
+                nombres_duelo = (duelo.esgrimista_a.nombre, duelo.esgrimista_b.nombre)
+                if nombre_a in nombres_duelo and nombre_b in nombres_duelo:
+                    duelo_encontrado = duelo
+                    fecha_original = fecha
+                    break
+            if duelo_encontrado:
+                break
+        if not duelo_encontrado:
+            raise ValueError(f"No se encontró un duelo entre {nombre_a} y {nombre_b} en el fixture.")     
+        if fecha_original == nueva_fecha:
+            return
+        
+        self.fixture_de_liga[fecha_original].remove(duelo_encontrado)
+        if nueva_fecha not in self.fixture_de_liga:
+            self.fixture_de_liga[nueva_fecha] = []
+        self.fixture_de_liga[nueva_fecha].append(duelo_encontrado)
+
+    ######### Tabla de posiciones
     ## El criterio de orden será:
     ## En primer lugar según el puntaje total acumulado por el esgrimista   
     ## En segundo lugar, por la diferencia de intercambios acumulada por el esgrimista
     ## En tercer lugar, por la cantidad de intercambios a favor acumulados por el esgrimista
     ## En cuarto lugar, por la cantidad menor de dobles acumulada por el esgrimista
     ## En quinto lugar, que dios nos salve
+    def constructor_de_tabla(self) -> pd.DataFrame:
+        data_posiciones = []
+        for esgrimista in self.participantes:
+                    data_posiciones.append({
+                        'Nombre' : esgrimista.nombre,
+                        'Curso o Rango Marcial' : esgrimista.rango,
+                        'Pts P' : esgrimista.puntaje_total,
+                        'Dif P' : esgrimista.intercambios_diferencia,
+                        'Asistencia' : esgrimista.asistencia,
+                        'Dobles P' : esgrimista.dobles_total                
+                    })
+        df_posiciones = pd.DataFrame(data_posiciones)
 
-    ### Esquema de datos (guía personal para no perderme), porque la tabla no me sale
+        return df_posiciones
 
-    ## Posición --- Nombre --- Puntaje --- Diferencia --- A favor --- En contra --- Dobles
+    def sort_en_tabla(self, df_posiciones: pd.DataFrame) -> pd.DataFrame:
+        df_posiciones_ordenadas = df_posiciones.sort_values(
+            by=['Pts P', 'Dif P', 'Asistencia', 'Dobles P'],
+            ascending=[False, False, False, True]
+        ).reset_index(drop=True)
+        df_posiciones_ordenadas.index = df_posiciones_ordenadas.index + 1
+        df_posiciones_ordenadas['Estado'] = ''
+        candidatos_validos = df_posiciones_ordenadas[df_posiciones_ordenadas['Curso o Rango Marcial'] != 'Ausbilder']
+        indices_clasificados = candidatos_validos.head(12).index
+        df_posiciones_ordenadas.loc[indices_clasificados, 'Estado'] = 'Clasificado'
+        return df_posiciones_ordenadas
 
-    ## Las posiciones son nominales de cada fila, ya que la primera fila con las etiquetas de cada columna es 0, así que queda excelente
-    ## Los nombres, ptjes, intercambios y dobles los puedo traer desde cada clase
-    ## El lío es, el ordenamiento
+    @property
+    def TABLA_POSICIONES(self) -> pd.DataFrame:
+        df_bruto = self.constructor_de_tabla()
+        return self.sort_en_tabla(df_bruto)
 
-    def tabla_de_posiciones(self) -> pd.DataFrame:
-        input_data_tabla_de_mierda = {}
+    def guardar_progreso(self, ruta_archivo: str) -> None:
+        with open(ruta_archivo, 'wb') as archivo:
+            pickle.dump(self, archivo)
 
-        for esgrimista in ConfiguracionLiga.participantes:
-            
+    @classmethod
+    def cargar_progreso(cls, ruta_archivo: str):
+        with open(ruta_archivo, 'rb') as archivo:
+            return pickle.load(archivo)
 
-
-        tabla_de_mierda = pd.DataFrame(input_data_tabla_de_mierda)
