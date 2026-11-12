@@ -43,32 +43,55 @@
         }
         .boton-volver:hover { background-color: #ff7e23; }
 
-        .tabla-liga {
-            border-collapse: collapse;
+        .buscador-container {
             width: 90%;
             max-width: 800px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: center;
+        }
+        #buscador {
+            width: 100%;
+            max-width: 400px;
+            padding: 12px 20px;
+            font-size: 1.1rem;
+            border-radius: 8px;
+            border: 1px solid #E86509;
             background-color: #1e1e1e;
+            color: white;
+            font-family: 'Cardo', serif;
+        }
+        #buscador:focus { outline: none; box-shadow: 0 0 8px rgba(232, 101, 9, 0.7); }
+
+        .tabla-responsive {
+            width: 90vw;
+            max-width: 800px;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
             box-shadow: 0 4px 10px rgba(0,0,0,0.5);
             border: 1px solid #444;
+            margin-bottom: 40px;
         }
-        .tabla-fechas {
-            max-width: 500px;
-            margin-bottom: 35px;
+        .tabla-fechas { margin-bottom: 20px; max-width: 500px; margin-left: auto; margin-right: auto; }
+        
+        .contenedor-fecha { width: 100%; max-width: 800px; }
+        .titulo-fecha {
+            color: #ffffff;
+            font-size: 1.5rem;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            text-align: left;
+            border-bottom: 2px solid #E86509;
+            padding-bottom: 5px;
         }
-        .tabla-liga th {
-            background-color: #E86509;
-            color: #000000;
-            font-weight: 700;
-            padding: 12px;
-            text-align: center;
-            font-size: 1.1rem;
-        }
-        .tabla-liga td {
-            padding: 10px;
-            text-align: center;
-            border-bottom: 1px solid #333;
-        }
+
+        .tabla-liga { border-collapse: collapse; width: 100%; min-width: 600px; background-color: #1e1e1e; }
+        .tabla-liga th { background-color: #E86509; color: #000000; font-weight: 700; padding: 12px; text-align: center; font-size: 1.1rem; }
+        .tabla-liga td { padding: 10px; text-align: center; border-bottom: 1px solid #333; }
         .tabla-liga tr:nth-child(even) { background-color: #262626; }
+        
+        .col-corta { width: 60px; }
+        .casilla-resultado { font-weight: bold; color: #E86509; background-color: #151515; }
     </style>
 </head>
 <body>
@@ -116,315 +139,514 @@
   </tbody>
 </table>
 
-    <table class="dataframe tabla-liga">
-  <thead>
-    <tr style="text-align: right;">
-      <th>Fecha</th>
-      <th>Duelo</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>Fecha 1</td>
-      <td>Fabricio Morales vs Angela Gonzales</td>
-    </tr>
-    <tr>
-      <td>Fecha 1</td>
-      <td>Cristian Henriquez vs Natalia Sanchez</td>
-    </tr>
-    <tr>
-      <td>Fecha 1</td>
-      <td>Juan Leon vs Tristan Muñoz</td>
-    </tr>
-    <tr>
-      <td>Fecha 1</td>
-      <td>Alexis Guerrero vs Felipe Calderara</td>
-    </tr>
-    <tr>
-      <td>Fecha 1</td>
-      <td>Camilo Cortés vs Tomás Alvarado</td>
-    </tr>
-    <tr>
-      <td>Fecha 1</td>
-      <td>Natalia Sanchez vs Agustín Burgos</td>
-    </tr>
-    <tr>
-      <td>Fecha 1</td>
-      <td>Sebastián Muñoz vs Alexis Guerrero</td>
-    </tr>
-    <tr>
-      <td>Fecha 1</td>
-      <td>Felipe Calderara vs Zoe Vélez</td>
-    </tr>
-    <tr>
-      <td>Fecha 1</td>
-      <td>Camilo Cortés vs Tristan Muñoz</td>
-    </tr>
-    <tr>
-      <td>Fecha 1</td>
-      <td>William Middleton vs Diego Silva</td>
-    </tr>
-    <tr>
-      <td>Fecha 1</td>
-      <td>Rodrigo Brozalez vs Zoe Vélez</td>
-    </tr>
-    <tr>
-      <td>Fecha 1</td>
-      <td>Guido Pinto vs Juan Leon</td>
-    </tr>
-    <tr>
-      <td>Fecha 1</td>
-      <td>Diego Silva vs Micaela Rodriguez</td>
-    </tr>
-    <tr>
-      <td>Fecha 2</td>
-      <td>Constanza Luz vs Juan Leon</td>
-    </tr>
-    <tr>
-      <td>Fecha 2</td>
-      <td>William Middleton vs Federico Hernández</td>
-    </tr>
-    <tr>
-      <td>Fecha 2</td>
-      <td>Renato Castro vs Fabricio Morales</td>
-    </tr>
-    <tr>
-      <td>Fecha 2</td>
-      <td>Renato Castro vs Tristan Muñoz</td>
-    </tr>
-    <tr>
-      <td>Fecha 2</td>
-      <td>Sebastián Muñoz vs Simón Risi</td>
-    </tr>
-    <tr>
-      <td>Fecha 2</td>
-      <td>Zoe Vélez vs William Middleton</td>
-    </tr>
-    <tr>
-      <td>Fecha 2</td>
-      <td>Federico Hernández vs Enrique Ortiz</td>
-    </tr>
-    <tr>
-      <td>Fecha 2</td>
-      <td>Agustín Burgos vs Rodrigo Brozalez</td>
-    </tr>
-    <tr>
-      <td>Fecha 2</td>
-      <td>Angela Gonzales vs Sebastián Muñoz</td>
-    </tr>
-    <tr>
-      <td>Fecha 2</td>
-      <td>Constanza Luz vs Guido Pinto</td>
-    </tr>
-    <tr>
-      <td>Fecha 2</td>
-      <td>Enrique Ortiz vs Camilo Cortés</td>
-    </tr>
-    <tr>
-      <td>Fecha 2</td>
-      <td>Simón Risi vs Alexis Guerrero</td>
-    </tr>
-    <tr>
-      <td>Fecha 3</td>
-      <td>Matías Yáñez&nbsp;&nbsp;vs Diego Silva</td>
-    </tr>
-    <tr>
-      <td>Fecha 3</td>
-      <td>Federico Hernández vs Constanza Luz</td>
-    </tr>
-    <tr>
-      <td>Fecha 3</td>
-      <td>Angela Gonzales vs Simón Risi</td>
-    </tr>
-    <tr>
-      <td>Fecha 3</td>
-      <td>Simón Risi vs Cristian Henriquez</td>
-    </tr>
-    <tr>
-      <td>Fecha 3</td>
-      <td>Matías Yáñez&nbsp;&nbsp;vs Micaela Rodriguez</td>
-    </tr>
-    <tr>
-      <td>Fecha 3</td>
-      <td>Tomás Alvarado vs Angela Gonzales</td>
-    </tr>
-    <tr>
-      <td>Fecha 3</td>
-      <td>Tristan Muñoz vs Tomás Alvarado</td>
-    </tr>
-    <tr>
-      <td>Fecha 3</td>
-      <td>Felipe Calderara vs Rodrigo Brozalez</td>
-    </tr>
-    <tr>
-      <td>Fecha 3</td>
-      <td>Constanza Luz vs Enrique Ortiz</td>
-    </tr>
-    <tr>
-      <td>Fecha 3</td>
-      <td>Alexis Guerrero vs Natalia Sanchez</td>
-    </tr>
-    <tr>
-      <td>Fecha 3</td>
-      <td>Micaela Rodriguez vs Federico Hernández</td>
-    </tr>
-    <tr>
-      <td>Fecha 3</td>
-      <td>Enrique Ortiz vs Renato Castro</td>
-    </tr>
-    <tr>
-      <td>Fecha 3</td>
-      <td>Fabricio Morales vs Paulo Lopez</td>
-    </tr>
-    <tr>
-      <td>Fecha 4</td>
-      <td>Zoe Vélez vs Diego Silva</td>
-    </tr>
-    <tr>
-      <td>Fecha 4</td>
-      <td>Juan Leon vs Renato Castro</td>
-    </tr>
-    <tr>
-      <td>Fecha 4</td>
-      <td>Paulo Lopez vs Simón Risi</td>
-    </tr>
-    <tr>
-      <td>Fecha 4</td>
-      <td>Sebastián Muñoz vs Cristian Henriquez</td>
-    </tr>
-    <tr>
-      <td>Fecha 4</td>
-      <td>Angela Gonzales vs Paulo Lopez</td>
-    </tr>
-    <tr>
-      <td>Fecha 4</td>
-      <td>Juan Leon vs Camilo Cortés</td>
-    </tr>
-    <tr>
-      <td>Fecha 4</td>
-      <td>Felipe Calderara vs Agustín Burgos</td>
-    </tr>
-    <tr>
-      <td>Fecha 4</td>
-      <td>Rodrigo Brozalez vs William Middleton</td>
-    </tr>
-    <tr>
-      <td>Fecha 4</td>
-      <td>William Middleton vs Micaela Rodriguez</td>
-    </tr>
-    <tr>
-      <td>Fecha 4</td>
-      <td>Guido Pinto vs Enrique Ortiz</td>
-    </tr>
-    <tr>
-      <td>Fecha 4</td>
-      <td>Natalia Sanchez vs Felipe Calderara</td>
-    </tr>
-    <tr>
-      <td>Fecha 4</td>
-      <td>Guido Pinto vs Camilo Cortés</td>
-    </tr>
-    <tr>
-      <td>Fecha 5</td>
-      <td>Enrique Ortiz vs Juan Leon</td>
-    </tr>
-    <tr>
-      <td>Fecha 5</td>
-      <td>Cristian Henriquez vs Alexis Guerrero</td>
-    </tr>
-    <tr>
-      <td>Fecha 5</td>
-      <td>Camilo Cortés vs Renato Castro</td>
-    </tr>
-    <tr>
-      <td>Fecha 5</td>
-      <td>Alexis Guerrero vs Agustín Burgos</td>
-    </tr>
-    <tr>
-      <td>Fecha 5</td>
-      <td>Simón Risi vs Natalia Sanchez</td>
-    </tr>
-    <tr>
-      <td>Fecha 5</td>
-      <td>Tomás Alvarado vs Fabricio Morales</td>
-    </tr>
-    <tr>
-      <td>Fecha 5</td>
-      <td>Micaela Rodriguez vs Constanza Luz</td>
-    </tr>
-    <tr>
-      <td>Fecha 5</td>
-      <td>Tomás Alvarado vs Paulo Lopez</td>
-    </tr>
-    <tr>
-      <td>Fecha 5</td>
-      <td>Zoe Vélez vs Matías Yáñez</td>
-    </tr>
-    <tr>
-      <td>Fecha 5</td>
-      <td>Paulo Lopez vs Cristian Henriquez</td>
-    </tr>
-    <tr>
-      <td>Fecha 5</td>
-      <td>Natalia Sanchez vs Rodrigo Brozalez</td>
-    </tr>
-    <tr>
-      <td>Fecha 5</td>
-      <td>Micaela Rodriguez vs Guido Pinto</td>
-    </tr>
-    <tr>
-      <td>Fecha 5</td>
-      <td>Matías Yáñez&nbsp;&nbsp;vs William Middleton</td>
-    </tr>
-    <tr>
-      <td>Fecha 6</td>
-      <td>Paulo Lopez vs Sebastián Muñoz</td>
-    </tr>
-    <tr>
-      <td>Fecha 6</td>
-      <td>Agustín Burgos vs Matías Yáñez</td>
-    </tr>
-    <tr>
-      <td>Fecha 6</td>
-      <td>Fabricio Morales vs Sebastián Muñoz</td>
-    </tr>
-    <tr>
-      <td>Fecha 6</td>
-      <td>Rodrigo Brozalez vs Matías Yáñez</td>
-    </tr>
-    <tr>
-      <td>Fecha 6</td>
-      <td>Diego Silva vs Federico Hernández</td>
-    </tr>
-    <tr>
-      <td>Fecha 6</td>
-      <td>Tristan Muñoz vs Fabricio Morales</td>
-    </tr>
-    <tr>
-      <td>Fecha 6</td>
-      <td>Agustín Burgos vs Zoe Vélez</td>
-    </tr>
-    <tr>
-      <td>Fecha 6</td>
-      <td>Federico Hernández vs Guido Pinto</td>
-    </tr>
-    <tr>
-      <td>Fecha 6</td>
-      <td>Diego Silva vs Constanza Luz</td>
-    </tr>
-    <tr>
-      <td>Fecha 6</td>
-      <td>Renato Castro vs Tomás Alvarado</td>
-    </tr>
-    <tr>
-      <td>Fecha 6</td>
-      <td>Cristian Henriquez vs Felipe Calderara</td>
-    </tr>
-    <tr>
-      <td>Fecha 6</td>
-      <td>Tristan Muñoz vs Angela Gonzales</td>
-    </tr>
-  </tbody>
-</table>
+    <div class="buscador-container">
+        <input type="text" id="buscador" onkeyup="filtrarDuelos()" placeholder="🔎 Buscar esgrimista (ej. Alexis)...">
+    </div>
+
+    <div class="contenedor-fecha"><h3 class="titulo-fecha">Fecha 1</h3>
+<div class="tabla-responsive"><table class="tabla-liga tabla-fixture">
+<thead><tr><th>Esgrimista 1</th><th class="col-corta">Pts</th><th class="col-corta">Dobles</th><th class="col-corta">Pts</th><th>Esgrimista 2</th></tr></thead>
+<tbody>
+
+                <tr class="fila-duelo">
+                    <td>Angela Gonzales</td>
+                    <td class="casilla-resultado">-</td>
+                    <td class="casilla-resultado">-</td>
+                    <td class="casilla-resultado">-</td>
+                    <td>Tomás Alvarado</td>
+                </tr>
+                <tr class="fila-duelo">
+                    <td>Natalia Sanchez</td>
+                    <td class="casilla-resultado">-</td>
+                    <td class="casilla-resultado">-</td>
+                    <td class="casilla-resultado">-</td>
+                    <td>Tristan Muñoz</td>
+                </tr>
+                <tr class="fila-duelo">
+                    <td>Enrique Ortiz</td>
+                    <td class="casilla-resultado">-</td>
+                    <td class="casilla-resultado">-</td>
+                    <td class="casilla-resultado">-</td>
+                    <td>Natalia Sanchez</td>
+                </tr>
+                <tr class="fila-duelo">
+                    <td>Micaela Rodriguez</td>
+                    <td class="casilla-resultado">-</td>
+                    <td class="casilla-resultado">-</td>
+                    <td class="casilla-resultado">-</td>
+                    <td>Renato Castro</td>
+                </tr>
+                <tr class="fila-duelo">
+                    <td>Camilo Cortés</td>
+                    <td class="casilla-resultado">-</td>
+                    <td class="casilla-resultado">-</td>
+                    <td class="casilla-resultado">-</td>
+                    <td>Alexis Guerrero</td>
+                </tr>
+                <tr class="fila-duelo">
+                    <td>Tomás Alvarado</td>
+                    <td class="casilla-resultado">-</td>
+                    <td class="casilla-resultado">-</td>
+                    <td class="casilla-resultado">-</td>
+                    <td>Diego Silva</td>
+                </tr>
+                <tr class="fila-duelo">
+                    <td>Micaela Rodriguez</td>
+                    <td class="casilla-resultado">-</td>
+                    <td class="casilla-resultado">-</td>
+                    <td class="casilla-resultado">-</td>
+                    <td>Agustín Burgos</td>
+                </tr>
+                <tr class="fila-duelo">
+                    <td>Constanza Luz</td>
+                    <td class="casilla-resultado">-</td>
+                    <td class="casilla-resultado">-</td>
+                    <td class="casilla-resultado">-</td>
+                    <td>Fabricio Morales</td>
+                </tr>
+                <tr class="fila-duelo">
+                    <td>Cristian Henriquez</td>
+                    <td class="casilla-resultado">-</td>
+                    <td class="casilla-resultado">-</td>
+                    <td class="casilla-resultado">-</td>
+                    <td>Federico Hernández</td>
+                </tr>
+                <tr class="fila-duelo">
+                    <td>Agustín Burgos</td>
+                    <td class="casilla-resultado">-</td>
+                    <td class="casilla-resultado">-</td>
+                    <td class="casilla-resultado">-</td>
+                    <td>Sebastián Muñoz</td>
+                </tr>
+                <tr class="fila-duelo">
+                    <td>Enrique Ortiz</td>
+                    <td class="casilla-resultado">-</td>
+                    <td class="casilla-resultado">-</td>
+                    <td class="casilla-resultado">-</td>
+                    <td>Rodrigo Brozalez</td>
+                </tr></tbody></table></div></div>
+<div class="contenedor-fecha"><h3 class="titulo-fecha">Fecha 2</h3>
+<div class="tabla-responsive"><table class="tabla-liga tabla-fixture">
+<thead><tr><th>Esgrimista 1</th><th class="col-corta">Pts</th><th class="col-corta">Dobles</th><th class="col-corta">Pts</th><th>Esgrimista 2</th></tr></thead>
+<tbody>
+
+                <tr class="fila-duelo">
+                    <td>Guido Pinto</td>
+                    <td class="casilla-resultado">-</td>
+                    <td class="casilla-resultado">-</td>
+                    <td class="casilla-resultado">-</td>
+                    <td>Felipe Calderara</td>
+                </tr>
+                <tr class="fila-duelo">
+                    <td>Simón Risi</td>
+                    <td class="casilla-resultado">-</td>
+                    <td class="casilla-resultado">-</td>
+                    <td class="casilla-resultado">-</td>
+                    <td>Angela Gonzales</td>
+                </tr>
+                <tr class="fila-duelo">
+                    <td>Tristan Muñoz</td>
+                    <td class="casilla-resultado">-</td>
+                    <td class="casilla-resultado">-</td>
+                    <td class="casilla-resultado">-</td>
+                    <td>Micaela Rodriguez</td>
+                </tr>
+                <tr class="fila-duelo">
+                    <td>Diego Silva</td>
+                    <td class="casilla-resultado">-</td>
+                    <td class="casilla-resultado">-</td>
+                    <td class="casilla-resultado">-</td>
+                    <td>Fabricio Morales</td>
+                </tr>
+                <tr class="fila-duelo">
+                    <td>Constanza Luz</td>
+                    <td class="casilla-resultado">-</td>
+                    <td class="casilla-resultado">-</td>
+                    <td class="casilla-resultado">-</td>
+                    <td>Diego Silva</td>
+                </tr>
+                <tr class="fila-duelo">
+                    <td>Cristian Henriquez</td>
+                    <td class="casilla-resultado">-</td>
+                    <td class="casilla-resultado">-</td>
+                    <td class="casilla-resultado">-</td>
+                    <td>Constanza Luz</td>
+                </tr>
+                <tr class="fila-duelo">
+                    <td>Fabricio Morales</td>
+                    <td class="casilla-resultado">-</td>
+                    <td class="casilla-resultado">-</td>
+                    <td class="casilla-resultado">-</td>
+                    <td>Rodrigo Brozalez</td>
+                </tr>
+                <tr class="fila-duelo">
+                    <td>Sebastián Muñoz</td>
+                    <td class="casilla-resultado">-</td>
+                    <td class="casilla-resultado">-</td>
+                    <td class="casilla-resultado">-</td>
+                    <td>Angela Gonzales</td>
+                </tr>
+                <tr class="fila-duelo">
+                    <td>Sebastián Muñoz</td>
+                    <td class="casilla-resultado">-</td>
+                    <td class="casilla-resultado">-</td>
+                    <td class="casilla-resultado">-</td>
+                    <td>Felipe Calderara</td>
+                </tr>
+                <tr class="fila-duelo">
+                    <td>Agustín Burgos</td>
+                    <td class="casilla-resultado">-</td>
+                    <td class="casilla-resultado">-</td>
+                    <td class="casilla-resultado">-</td>
+                    <td>Guido Pinto</td>
+                </tr></tbody></table></div></div>
+<div class="contenedor-fecha"><h3 class="titulo-fecha">Fecha 3</h3>
+<div class="tabla-responsive"><table class="tabla-liga tabla-fixture">
+<thead><tr><th>Esgrimista 1</th><th class="col-corta">Pts</th><th class="col-corta">Dobles</th><th class="col-corta">Pts</th><th>Esgrimista 2</th></tr></thead>
+<tbody>
+
+                <tr class="fila-duelo">
+                    <td>Angela Gonzales</td>
+                    <td class="casilla-resultado">-</td>
+                    <td class="casilla-resultado">-</td>
+                    <td class="casilla-resultado">-</td>
+                    <td>Federico Hernández</td>
+                </tr>
+                <tr class="fila-duelo">
+                    <td>Natalia Sanchez</td>
+                    <td class="casilla-resultado">-</td>
+                    <td class="casilla-resultado">-</td>
+                    <td class="casilla-resultado">-</td>
+                    <td>Zoe Vélez</td>
+                </tr>
+                <tr class="fila-duelo">
+                    <td>Tristan Muñoz</td>
+                    <td class="casilla-resultado">-</td>
+                    <td class="casilla-resultado">-</td>
+                    <td class="casilla-resultado">-</td>
+                    <td>Camilo Cortés</td>
+                </tr>
+                <tr class="fila-duelo">
+                    <td>Angela Gonzales</td>
+                    <td class="casilla-resultado">-</td>
+                    <td class="casilla-resultado">-</td>
+                    <td class="casilla-resultado">-</td>
+                    <td>Cristian Henriquez</td>
+                </tr>
+                <tr class="fila-duelo">
+                    <td>Federico Hernández</td>
+                    <td class="casilla-resultado">-</td>
+                    <td class="casilla-resultado">-</td>
+                    <td class="casilla-resultado">-</td>
+                    <td>Tomás Alvarado</td>
+                </tr>
+                <tr class="fila-duelo">
+                    <td>Constanza Luz</td>
+                    <td class="casilla-resultado">-</td>
+                    <td class="casilla-resultado">-</td>
+                    <td class="casilla-resultado">-</td>
+                    <td>Enrique Ortiz</td>
+                </tr>
+                <tr class="fila-duelo">
+                    <td>Rodrigo Brozalez</td>
+                    <td class="casilla-resultado">-</td>
+                    <td class="casilla-resultado">-</td>
+                    <td class="casilla-resultado">-</td>
+                    <td>Zoe Vélez</td>
+                </tr>
+                <tr class="fila-duelo">
+                    <td>Simón Risi</td>
+                    <td class="casilla-resultado">-</td>
+                    <td class="casilla-resultado">-</td>
+                    <td class="casilla-resultado">-</td>
+                    <td>Felipe Calderara</td>
+                </tr>
+                <tr class="fila-duelo">
+                    <td>Camilo Cortés</td>
+                    <td class="casilla-resultado">-</td>
+                    <td class="casilla-resultado">-</td>
+                    <td class="casilla-resultado">-</td>
+                    <td>Renato Castro</td>
+                </tr>
+                <tr class="fila-duelo">
+                    <td>Cristian Henriquez</td>
+                    <td class="casilla-resultado">-</td>
+                    <td class="casilla-resultado">-</td>
+                    <td class="casilla-resultado">-</td>
+                    <td>Tomás Alvarado</td>
+                </tr>
+                <tr class="fila-duelo">
+                    <td>Alexis Guerrero</td>
+                    <td class="casilla-resultado">-</td>
+                    <td class="casilla-resultado">-</td>
+                    <td class="casilla-resultado">-</td>
+                    <td>Agustín Burgos</td>
+                </tr></tbody></table></div></div>
+<div class="contenedor-fecha"><h3 class="titulo-fecha">Fecha 4</h3>
+<div class="tabla-responsive"><table class="tabla-liga tabla-fixture">
+<thead><tr><th>Esgrimista 1</th><th class="col-corta">Pts</th><th class="col-corta">Dobles</th><th class="col-corta">Pts</th><th>Esgrimista 2</th></tr></thead>
+<tbody>
+
+                <tr class="fila-duelo">
+                    <td>Felipe Calderara</td>
+                    <td class="casilla-resultado">-</td>
+                    <td class="casilla-resultado">-</td>
+                    <td class="casilla-resultado">-</td>
+                    <td>Cristian Henriquez</td>
+                </tr>
+                <tr class="fila-duelo">
+                    <td>Federico Hernández</td>
+                    <td class="casilla-resultado">-</td>
+                    <td class="casilla-resultado">-</td>
+                    <td class="casilla-resultado">-</td>
+                    <td>Diego Silva</td>
+                </tr>
+                <tr class="fila-duelo">
+                    <td>Fabricio Morales</td>
+                    <td class="casilla-resultado">-</td>
+                    <td class="casilla-resultado">-</td>
+                    <td class="casilla-resultado">-</td>
+                    <td>Natalia Sanchez</td>
+                </tr>
+                <tr class="fila-duelo">
+                    <td>Renato Castro</td>
+                    <td class="casilla-resultado">-</td>
+                    <td class="casilla-resultado">-</td>
+                    <td class="casilla-resultado">-</td>
+                    <td>Guido Pinto</td>
+                </tr>
+                <tr class="fila-duelo">
+                    <td>Zoe Vélez</td>
+                    <td class="casilla-resultado">-</td>
+                    <td class="casilla-resultado">-</td>
+                    <td class="casilla-resultado">-</td>
+                    <td>Alexis Guerrero</td>
+                </tr>
+                <tr class="fila-duelo">
+                    <td>Felipe Calderara</td>
+                    <td class="casilla-resultado">-</td>
+                    <td class="casilla-resultado">-</td>
+                    <td class="casilla-resultado">-</td>
+                    <td>Angela Gonzales</td>
+                </tr>
+                <tr class="fila-duelo">
+                    <td>Micaela Rodriguez</td>
+                    <td class="casilla-resultado">-</td>
+                    <td class="casilla-resultado">-</td>
+                    <td class="casilla-resultado">-</td>
+                    <td>Alexis Guerrero</td>
+                </tr>
+                <tr class="fila-duelo">
+                    <td>Federico Hernández</td>
+                    <td class="casilla-resultado">-</td>
+                    <td class="casilla-resultado">-</td>
+                    <td class="casilla-resultado">-</td>
+                    <td>Constanza Luz</td>
+                </tr>
+                <tr class="fila-duelo">
+                    <td>Enrique Ortiz</td>
+                    <td class="casilla-resultado">-</td>
+                    <td class="casilla-resultado">-</td>
+                    <td class="casilla-resultado">-</td>
+                    <td>Fabricio Morales</td>
+                </tr>
+                <tr class="fila-duelo">
+                    <td>Tomás Alvarado</td>
+                    <td class="casilla-resultado">-</td>
+                    <td class="casilla-resultado">-</td>
+                    <td class="casilla-resultado">-</td>
+                    <td>Constanza Luz</td>
+                </tr></tbody></table></div></div>
+<div class="contenedor-fecha"><h3 class="titulo-fecha">Fecha 5</h3>
+<div class="tabla-responsive"><table class="tabla-liga tabla-fixture">
+<thead><tr><th>Esgrimista 1</th><th class="col-corta">Pts</th><th class="col-corta">Dobles</th><th class="col-corta">Pts</th><th>Esgrimista 2</th></tr></thead>
+<tbody>
+
+                <tr class="fila-duelo">
+                    <td>Zoe Vélez</td>
+                    <td class="casilla-resultado">-</td>
+                    <td class="casilla-resultado">-</td>
+                    <td class="casilla-resultado">-</td>
+                    <td>Camilo Cortés</td>
+                </tr>
+                <tr class="fila-duelo">
+                    <td>Alexis Guerrero</td>
+                    <td class="casilla-resultado">-</td>
+                    <td class="casilla-resultado">-</td>
+                    <td class="casilla-resultado">-</td>
+                    <td>Guido Pinto</td>
+                </tr>
+                <tr class="fila-duelo">
+                    <td>Tomás Alvarado</td>
+                    <td class="casilla-resultado">-</td>
+                    <td class="casilla-resultado">-</td>
+                    <td class="casilla-resultado">-</td>
+                    <td>Enrique Ortiz</td>
+                </tr>
+                <tr class="fila-duelo">
+                    <td>Diego Silva</td>
+                    <td class="casilla-resultado">-</td>
+                    <td class="casilla-resultado">-</td>
+                    <td class="casilla-resultado">-</td>
+                    <td>Enrique Ortiz</td>
+                </tr>
+                <tr class="fila-duelo">
+                    <td>Diego Silva</td>
+                    <td class="casilla-resultado">-</td>
+                    <td class="casilla-resultado">-</td>
+                    <td class="casilla-resultado">-</td>
+                    <td>Rodrigo Brozalez</td>
+                </tr>
+                <tr class="fila-duelo">
+                    <td>Simón Risi</td>
+                    <td class="casilla-resultado">-</td>
+                    <td class="casilla-resultado">-</td>
+                    <td class="casilla-resultado">-</td>
+                    <td>Sebastián Muñoz</td>
+                </tr>
+                <tr class="fila-duelo">
+                    <td>Alexis Guerrero</td>
+                    <td class="casilla-resultado">-</td>
+                    <td class="casilla-resultado">-</td>
+                    <td class="casilla-resultado">-</td>
+                    <td>Renato Castro</td>
+                </tr>
+                <tr class="fila-duelo">
+                    <td>Rodrigo Brozalez</td>
+                    <td class="casilla-resultado">-</td>
+                    <td class="casilla-resultado">-</td>
+                    <td class="casilla-resultado">-</td>
+                    <td>Tristan Muñoz</td>
+                </tr>
+                <tr class="fila-duelo">
+                    <td>Guido Pinto</td>
+                    <td class="casilla-resultado">-</td>
+                    <td class="casilla-resultado">-</td>
+                    <td class="casilla-resultado">-</td>
+                    <td>Simón Risi</td>
+                </tr>
+                <tr class="fila-duelo">
+                    <td>Fabricio Morales</td>
+                    <td class="casilla-resultado">-</td>
+                    <td class="casilla-resultado">-</td>
+                    <td class="casilla-resultado">-</td>
+                    <td>Tristan Muñoz</td>
+                </tr>
+                <tr class="fila-duelo">
+                    <td>Natalia Sanchez</td>
+                    <td class="casilla-resultado">-</td>
+                    <td class="casilla-resultado">-</td>
+                    <td class="casilla-resultado">-</td>
+                    <td>Camilo Cortés</td>
+                </tr></tbody></table></div></div>
+<div class="contenedor-fecha"><h3 class="titulo-fecha">Fecha 6</h3>
+<div class="tabla-responsive"><table class="tabla-liga tabla-fixture">
+<thead><tr><th>Esgrimista 1</th><th class="col-corta">Pts</th><th class="col-corta">Dobles</th><th class="col-corta">Pts</th><th>Esgrimista 2</th></tr></thead>
+<tbody>
+
+                <tr class="fila-duelo">
+                    <td>Zoe Vélez</td>
+                    <td class="casilla-resultado">-</td>
+                    <td class="casilla-resultado">-</td>
+                    <td class="casilla-resultado">-</td>
+                    <td>Micaela Rodriguez</td>
+                </tr>
+                <tr class="fila-duelo">
+                    <td>Camilo Cortés</td>
+                    <td class="casilla-resultado">-</td>
+                    <td class="casilla-resultado">-</td>
+                    <td class="casilla-resultado">-</td>
+                    <td>Micaela Rodriguez</td>
+                </tr>
+                <tr class="fila-duelo">
+                    <td>Sebastián Muñoz</td>
+                    <td class="casilla-resultado">-</td>
+                    <td class="casilla-resultado">-</td>
+                    <td class="casilla-resultado">-</td>
+                    <td>Cristian Henriquez</td>
+                </tr>
+                <tr class="fila-duelo">
+                    <td>Tristan Muñoz</td>
+                    <td class="casilla-resultado">-</td>
+                    <td class="casilla-resultado">-</td>
+                    <td class="casilla-resultado">-</td>
+                    <td>Zoe Vélez</td>
+                </tr>
+                <tr class="fila-duelo">
+                    <td>Rodrigo Brozalez</td>
+                    <td class="casilla-resultado">-</td>
+                    <td class="casilla-resultado">-</td>
+                    <td class="casilla-resultado">-</td>
+                    <td>Natalia Sanchez</td>
+                </tr>
+                <tr class="fila-duelo">
+                    <td>Felipe Calderara</td>
+                    <td class="casilla-resultado">-</td>
+                    <td class="casilla-resultado">-</td>
+                    <td class="casilla-resultado">-</td>
+                    <td>Federico Hernández</td>
+                </tr>
+                <tr class="fila-duelo">
+                    <td>Agustín Burgos</td>
+                    <td class="casilla-resultado">-</td>
+                    <td class="casilla-resultado">-</td>
+                    <td class="casilla-resultado">-</td>
+                    <td>Simón Risi</td>
+                </tr>
+                <tr class="fila-duelo">
+                    <td>Guido Pinto</td>
+                    <td class="casilla-resultado">-</td>
+                    <td class="casilla-resultado">-</td>
+                    <td class="casilla-resultado">-</td>
+                    <td>Sebastián Muñoz</td>
+                </tr>
+                <tr class="fila-duelo">
+                    <td>Renato Castro</td>
+                    <td class="casilla-resultado">-</td>
+                    <td class="casilla-resultado">-</td>
+                    <td class="casilla-resultado">-</td>
+                    <td>Simón Risi</td>
+                </tr>
+                <tr class="fila-duelo">
+                    <td>Renato Castro</td>
+                    <td class="casilla-resultado">-</td>
+                    <td class="casilla-resultado">-</td>
+                    <td class="casilla-resultado">-</td>
+                    <td>Agustín Burgos</td>
+                </tr></tbody></table></div></div>
+
+
+    <script>
+        function filtrarDuelos() {
+            let input = document.getElementById('buscador');
+            let filter = input.value.toLowerCase();
+            let contenedores = document.getElementsByClassName('contenedor-fecha');
+
+            for (let i = 0; i < contenedores.length; i++) {
+                let contenedor = contenedores[i];
+                let filas = contenedor.getElementsByClassName('fila-duelo');
+                let fechaVisible = false;
+
+                for (let j = 0; j < filas.length; j++) {
+                    let fila = filas[j];
+                    let textoFila = fila.textContent || fila.innerText;
+                    
+                    if (textoFila.toLowerCase().indexOf(filter) > -1) {
+                        fila.style.display = "";
+                        fechaVisible = true;
+                    } else {
+                        fila.style.display = "none";
+                    }
+                }
+                
+                // Si ningún duelo coincide en esta fecha, ocultamos la fecha completa
+                if (fechaVisible) {
+                    contenedor.style.display = "";
+                } else {
+                    contenedor.style.display = "none";
+                }
+            }
+        }
+    </script>
 </body>
 </html>

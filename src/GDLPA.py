@@ -379,13 +379,40 @@ class ConfiguracionLiga:
 
 
     def exportar_fixture_html(self, ruta_salida: str = "fixture.html") -> None:
+        """Genera el HTML del Fixture con tablas separadas por fecha y barra de búsqueda."""
+        
         df_calendario = pd.DataFrame(
             list(self.fechas_liga.items()),
             columns=["Fecha", "Fecha de calendario"]
         )
         tabla_fechas_html = df_calendario.to_html(index=False, classes="tabla-liga tabla-fechas", border=0)
-        df_fix = self.fixture_de_fechas
-        tabla_duelos_html = df_fix.to_html(index=False, classes="tabla-liga", border=0)
+
+        html_tablas_duelos = ""
+        for fecha, lista_duelos in self.fixture_de_liga.items():
+            html_tablas_duelos += f'<div class="contenedor-fecha"><h3 class="titulo-fecha">{fecha}</h3>\n'
+            html_tablas_duelos += '<div class="tabla-responsive"><table class="tabla-liga tabla-fixture">\n'
+            html_tablas_duelos += '<thead><tr><th>Esgrimista 1</th><th class="col-corta">Pts</th><th class="col-corta">Dobles</th><th class="col-corta">Pts</th><th>Esgrimista 2</th></tr></thead>\n<tbody>\n'
+            
+            for duelo in lista_duelos:
+                try:
+                    if hasattr(duelo, 'puntos_a') and duelo.puntos_a is not None:
+                        pa, dob, pb = duelo.puntos_a, duelo.dobles, duelo.puntos_b
+                    else:
+                        pa, dob, pb = "-", "-", "-"
+                except Exception:
+                    pa, dob, pb = "-", "-", "-"
+
+                html_tablas_duelos += f'''
+                <tr class="fila-duelo">
+                    <td>{duelo.esgrimista_a.nombre}</td>
+                    <td class="casilla-resultado">{pa}</td>
+                    <td class="casilla-resultado">{dob}</td>
+                    <td class="casilla-resultado">{pb}</td>
+                    <td>{duelo.esgrimista_b.nombre}</td>
+                </tr>'''
+            
+            html_tablas_duelos += '</tbody></table></div></div>\n'
+
         html_completo = f"""<!DOCTYPE html>
 <html lang="es">
 <head>
@@ -431,32 +458,55 @@ class ConfiguracionLiga:
         }}
         .boton-volver:hover {{ background-color: #ff7e23; }}
 
-        .tabla-liga {{
-            border-collapse: collapse;
+        .buscador-container {{
             width: 90%;
             max-width: 800px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: center;
+        }}
+        #buscador {{
+            width: 100%;
+            max-width: 400px;
+            padding: 12px 20px;
+            font-size: 1.1rem;
+            border-radius: 8px;
+            border: 1px solid #E86509;
             background-color: #1e1e1e;
+            color: white;
+            font-family: 'Cardo', serif;
+        }}
+        #buscador:focus {{ outline: none; box-shadow: 0 0 8px rgba(232, 101, 9, 0.7); }}
+
+        .tabla-responsive {{
+            width: 90vw;
+            max-width: 800px;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
             box-shadow: 0 4px 10px rgba(0,0,0,0.5);
             border: 1px solid #444;
+            margin-bottom: 40px;
         }}
-        .tabla-fechas {{
-            max-width: 500px;
-            margin-bottom: 35px;
+        .tabla-fechas {{ margin-bottom: 20px; max-width: 500px; margin-left: auto; margin-right: auto; }}
+        
+        .contenedor-fecha {{ width: 100%; max-width: 800px; }}
+        .titulo-fecha {{
+            color: #ffffff;
+            font-size: 1.5rem;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            text-align: left;
+            border-bottom: 2px solid #E86509;
+            padding-bottom: 5px;
         }}
-        .tabla-liga th {{
-            background-color: #E86509;
-            color: #000000;
-            font-weight: 700;
-            padding: 12px;
-            text-align: center;
-            font-size: 1.1rem;
-        }}
-        .tabla-liga td {{
-            padding: 10px;
-            text-align: center;
-            border-bottom: 1px solid #333;
-        }}
+
+        .tabla-liga {{ border-collapse: collapse; width: 100%; min-width: 600px; background-color: #1e1e1e; }}
+        .tabla-liga th {{ background-color: #E86509; color: #000000; font-weight: 700; padding: 12px; text-align: center; font-size: 1.1rem; }}
+        .tabla-liga td {{ padding: 10px; text-align: center; border-bottom: 1px solid #333; }}
         .tabla-liga tr:nth-child(even) {{ background-color: #262626; }}
+        
+        .col-corta {{ width: 60px; }}
+        .casilla-resultado {{ font-weight: bold; color: #E86509; background-color: #151515; }}
     </style>
 </head>
 <body>
@@ -471,13 +521,50 @@ class ConfiguracionLiga:
 
     {tabla_fechas_html}
 
-    {tabla_duelos_html}
+    <div class="buscador-container">
+        <input type="text" id="buscador" onkeyup="filtrarDuelos()" placeholder="🔎 Buscar esgrimista (ej. Alexis)...">
+    </div>
+
+    {html_tablas_duelos}
+
+    <script>
+        function filtrarDuelos() {{
+            let input = document.getElementById('buscador');
+            let filter = input.value.toLowerCase();
+            let contenedores = document.getElementsByClassName('contenedor-fecha');
+
+            for (let i = 0; i < contenedores.length; i++) {{
+                let contenedor = contenedores[i];
+                let filas = contenedor.getElementsByClassName('fila-duelo');
+                let fechaVisible = false;
+
+                for (let j = 0; j < filas.length; j++) {{
+                    let fila = filas[j];
+                    let textoFila = fila.textContent || fila.innerText;
+                    
+                    if (textoFila.toLowerCase().indexOf(filter) > -1) {{
+                        fila.style.display = "";
+                        fechaVisible = true;
+                    }} else {{
+                        fila.style.display = "none";
+                    }}
+                }}
+                
+                // Si ningún duelo coincide en esta fecha, ocultamos la fecha completa
+                if (fechaVisible) {{
+                    contenedor.style.display = "";
+                }} else {{
+                    contenedor.style.display = "none";
+                }}
+            }}
+        }}
+    </script>
 </body>
 </html>"""
 
         with open(ruta_salida, "w", encoding="utf-8") as f:
             f.write(html_completo)
-        print(f"¡Fixture HTML generado con éxito en '{ruta_salida}'!")
+        print(f"¡Fixture HTML actualizado con búsqueda en '{ruta_salida}'!")
 
 
     def exportar_ranking_html(self, ruta_salida: str = "ranking.html") -> None:
