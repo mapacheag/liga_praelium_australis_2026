@@ -545,14 +545,19 @@ class ConfiguracionLiga:
             transition: 0.2s;
         }}
         .boton-volver:hover {{ background-color: #ff7e23; }}
-
+        .tabla-responsive {{
+            width: 95%;
+            max-width: 950px;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+            border: 1px solid #444;
+        }}
         .tabla-liga {{
             border-collapse: collapse;
             width: 95%;
             max-width: 950px;
             background-color: #1e1e1e;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
-            border: 1px solid #444;
         }}
         .tabla-liga th {{
             background-color: #E86509;
@@ -602,8 +607,9 @@ class ConfiguracionLiga:
         </div>
     </a>
     <a href="index.html" class="boton-volver">← Volver al Inicio</a>
-
+<div class="tabla-responsive">
     {tabla_html}
+</div>
 
     <div class="glosario">
         <h3>Glosario</h3>

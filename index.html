@@ -78,6 +78,26 @@
             background-color: #ff7e23;
             transform: scale(1.05);
         }
+        @media (max-width: 650px) {
+            .header-container {
+                flex-direction: column;
+                text-align: center;
+                gap: 10px;
+            }
+            .main-content {
+                flex-direction: column;
+                gap: 20px;
+                padding: 0 20px;
+            }
+            .feder-img {
+                height: 220px; /* Reduce un poco la espada en móvil para que quepa todo sin scroll */
+            }
+            .boton-liga {
+                width: 100%;
+                max-width: 260px;
+                text-align: center;
+            }
+        }
     </style>
 </head>
 <body>
