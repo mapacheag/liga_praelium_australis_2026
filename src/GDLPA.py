@@ -379,7 +379,6 @@ class ConfiguracionLiga:
 
 
     def exportar_fixture_html(self, ruta_salida: str = "fixture.html") -> None:
-        """Genera el HTML del Fixture con tablas separadas por fecha y barra de búsqueda."""
         
         df_calendario = pd.DataFrame(
             list(self.fechas_liga.items()),
@@ -522,7 +521,7 @@ class ConfiguracionLiga:
     {tabla_fechas_html}
 
     <div class="buscador-container">
-        <input type="text" id="buscador" onkeyup="filtrarDuelos()" placeholder="🔎 Buscar esgrimista (ej. Alexis)...">
+        <input type="text" id="buscador" onkeyup="filtrarDuelos()" placeholder="🔎 Buscar esgrimista (ej: Camilo)...">
     </div>
 
     {html_tablas_duelos}
@@ -550,7 +549,6 @@ class ConfiguracionLiga:
                     }}
                 }}
                 
-                // Si ningún duelo coincide en esta fecha, ocultamos la fecha completa
                 if (fechaVisible) {{
                     contenedor.style.display = "";
                 }} else {{
@@ -642,7 +640,7 @@ class ConfiguracionLiga:
         }}
         .tabla-liga {{
             border-collapse: collapse;
-            width: 95%;
+            width: 100%;
             max-width: 950px;
             background-color: #1e1e1e;
         }}
