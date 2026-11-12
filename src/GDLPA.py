@@ -255,6 +255,44 @@ class ConfiguracionLiga:
         self.fixture_de_liga[asignar_fecha] = self.duelos[self.duelos_calendarizados : self.duelos_calendarizados + cantidad_de_duelos]
         self.duelos_calendarizados = cantidad_de_duelos + self.duelos_calendarizados
 
+    def calendarizar_con_cota(self, cupos_por_fecha: list[int], max_por_persona: int = 2) -> None:
+        nombres_fechas = list(self.fechas_liga.keys())
+        if len(cupos_por_fecha) != len(nombres_fechas):
+            raise ValueError("La lista de cupos debe coincidir en largo con las fechas creadas.")
+        if sum(cupos_por_fecha) != len(self.duelos):
+            raise ValueError(f"La suma de cupos ({sum(cupos_por_fecha)}) no coincide con el total de duelos ({len(self.duelos)}).")
+        cupos_dict = dict(zip(nombres_fechas, cupos_por_fecha))
+        for _ in range(1000):
+            duelos_barajados = self.duelos.copy()
+            rd.shuffle(duelos_barajados)
+            asignacion = {f: [] for f in nombres_fechas}
+            conteo = {f: {e.nombre: 0 for e in self.participantes} for f in nombres_fechas}
+            exito_global = True
+
+            for duelo in duelos_barajados:
+                a = duelo.esgrimista_a.nombre
+                b = duelo.esgrimista_b.nombre
+
+                fechas_validas = [
+                    f for f in nombres_fechas
+                    if len(asignacion[f]) < cupos_dict[f]
+                    and conteo[f][a] < max_por_persona
+                    and conteo[f][b] < max_por_persona
+                ]
+                if not fechas_validas:
+                    exito_global = False
+                    break
+                fecha_elegida = rd.choice(fechas_validas)
+                asignacion[fecha_elegida].append(duelo)
+                conteo[fecha_elegida][a] += 1
+                conteo[fecha_elegida][b] += 1
+
+            if exito_global:
+                self.fixture_de_liga = asignacion
+                self.duelos_calendarizados = len(self.duelos)
+                return
+        raise RuntimeError("No se logró encontrar una distribución aleatoria que cumpla la cota tras 1000 intentos.")
+
     @property
     def fixture_de_fechas(self) -> pd.DataFrame:
         df_fixture_fechas_input_data = []
@@ -339,3 +377,243 @@ class ConfiguracionLiga:
         with open(ruta_archivo, 'rb') as archivo:
             return pickle.load(archivo)
 
+
+    def exportar_fixture_html(self, ruta_salida: str = "fixture.html") -> None:
+        df_calendario = pd.DataFrame(
+            list(self.fechas_liga.items()),
+            columns=["Fecha", "Fecha de calendario"]
+        )
+        tabla_fechas_html = df_calendario.to_html(index=False, classes="tabla-liga tabla-fechas", border=0)
+        df_fix = self.fixture_de_fechas
+        tabla_duelos_html = df_fix.to_html(index=False, classes="tabla-liga", border=0)
+        html_completo = f"""<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fixture - Liga Praelium Australis 2026</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cardo:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {{
+            background-color: #262626;
+            color: #ffffff;
+            font-family: 'Cardo', serif;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }}
+        .header-container {{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 30px;
+            text-decoration: none;
+            color: white;
+        }}
+        .logo-club {{ height: 90px; width: auto; }}
+        .header-text h1 {{ margin: 0; font-size: 1.8rem; font-weight: 400; }}
+        .header-text h2 {{ margin: 0; font-size: 1.4rem; font-weight: 400; color: #E86509; }}
+        
+        .boton-volver {{
+            background-color: #E86509;
+            color: #000;
+            text-decoration: none;
+            font-weight: bold;
+            padding: 10px 20px;
+            border-radius: 5px;
+            margin-bottom: 25px;
+            transition: 0.2s;
+        }}
+        .boton-volver:hover {{ background-color: #ff7e23; }}
+
+        .tabla-liga {{
+            border-collapse: collapse;
+            width: 90%;
+            max-width: 800px;
+            background-color: #1e1e1e;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+            border: 1px solid #444;
+        }}
+        .tabla-fechas {{
+            max-width: 500px;
+            margin-bottom: 35px;
+        }}
+        .tabla-liga th {{
+            background-color: #E86509;
+            color: #000000;
+            font-weight: 700;
+            padding: 12px;
+            text-align: center;
+            font-size: 1.1rem;
+        }}
+        .tabla-liga td {{
+            padding: 10px;
+            text-align: center;
+            border-bottom: 1px solid #333;
+        }}
+        .tabla-liga tr:nth-child(even) {{ background-color: #262626; }}
+    </style>
+</head>
+<body>
+    <a href="index.html" class="header-container">
+        <img src="assets/images/logo_PA.png" alt="Logo PA" class="logo-club">
+        <div class="header-text">
+            <h1>Fixture de Liga</h1>
+            <h2>Espada Larga 2026</h2>
+        </div>
+    </a>
+    <a href="index.html" class="boton-volver">← Volver al Inicio</a>
+
+    {tabla_fechas_html}
+
+    {tabla_duelos_html}
+</body>
+</html>"""
+
+        with open(ruta_salida, "w", encoding="utf-8") as f:
+            f.write(html_completo)
+        print(f"¡Fixture HTML generado con éxito en '{ruta_salida}'!")
+
+
+    def exportar_ranking_html(self, ruta_salida: str = "ranking.html") -> None:
+        df_rank = self.TABLA_POSICIONES
+        
+        def resaltar_clasificados(row):
+            if row['Estado'] == 'Clasificado':
+                return ['background-color: #1e3a24; color: #73e68c; font-weight: bold;'] * len(row)
+            return [''] * len(row)
+
+        tabla_html = (
+            df_rank.style
+            .apply(resaltar_clasificados, axis=1)
+            .format({
+                "Pts P": "{:.2f}",
+                "Dif P": "{:.2f}",
+                "Asistencia": "{:.1f}",
+                "Dobles P": "{:.2f}"
+            })
+            .set_table_attributes('class="tabla-liga" border="0"')
+            .to_html(index=True)
+        )
+
+        html_completo = f"""<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ranking - Liga Praelium Australis 2026</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cardo:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {{
+            background-color: #262626;
+            color: #ffffff;
+            font-family: 'Cardo', serif;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }}
+        .header-container {{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 30px;
+            text-decoration: none;
+            color: white;
+        }}
+        .logo-club {{ height: 90px; width: auto; }}
+        .header-text h1 {{ margin: 0; font-size: 1.8rem; font-weight: 400; }}
+        .header-text h2 {{ margin: 0; font-size: 1.4rem; font-weight: 400; color: #E86509; }}
+        
+        .boton-volver {{
+            background-color: #E86509;
+            color: #000;
+            text-decoration: none;
+            font-weight: bold;
+            padding: 10px 20px;
+            border-radius: 5px;
+            margin-bottom: 25px;
+            transition: 0.2s;
+        }}
+        .boton-volver:hover {{ background-color: #ff7e23; }}
+
+        .tabla-liga {{
+            border-collapse: collapse;
+            width: 95%;
+            max-width: 950px;
+            background-color: #1e1e1e;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+            border: 1px solid #444;
+        }}
+        .tabla-liga th {{
+            background-color: #E86509;
+            color: #000000;
+            font-weight: 700;
+            padding: 12px;
+            text-align: center;
+            font-size: 1rem;
+        }}
+        .tabla-liga td {{
+            padding: 8px 12px;
+            text-align: center;
+            border-bottom: 1px solid #333;
+        }}
+
+        .glosario {{
+            width: 95%;
+            max-width: 950px;
+            margin-top: 25px;
+            margin-bottom: 40px;
+            color: #ffffff;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            text-align: left;
+        }}
+        .glosario h3 {{
+            margin: 0 0 8px 0;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #ffffff;
+        }}
+        .glosario p {{
+            margin: 4px 0;
+        }}
+        .destacado-naranjo {{
+            color: #E86509;
+            font-weight: bold;
+        }}
+    </style>
+</head>
+<body>
+    <a href="index.html" class="header-container">
+        <img src="assets/images/logo_PA.png" alt="Logo PA" class="logo-club">
+        <div class="header-text">
+            <h1>Ranking de Liga</h1>
+            <h2>Espada Larga 2026</h2>
+        </div>
+    </a>
+    <a href="index.html" class="boton-volver">← Volver al Inicio</a>
+
+    {tabla_html}
+
+    <div class="glosario">
+        <h3>Glosario</h3>
+        <p><strong>Pts P:</strong> Puntaje total ponderado por la cantidad de duelos combatidos por el esgrimista <span class="destacado-naranjo">[más es mejor]</span></p>
+        <p><strong>Dif P:</strong> Diferencia total de intercambios ponderada por la cantidad de duelos combatidos por el esgrimista (Para ello considere la diferencia entre los intercambios favorables ponderados y los intercambios desfavorables ponderados) <span class="destacado-naranjo">[más es mejor]</span></p>
+        <p><strong>Asistencia:</strong> Cantidad de clases a las que asistió el esgrimista <span class="destacado-naranjo">[más es mejor]</span></p>
+        <p><strong>Dobles P:</strong> Cantidad de dobles cometidos por el esgrimista ponderados por la cantidad de duelos combatidos <span class="destacado-naranjo">[menos es mejor]</span></p>
+    </div>
+</body>
+</html>"""
+        with open(ruta_salida, "w", encoding="utf-8") as f:
+            f.write(html_completo)
+        print(f"¡Ranking HTML generado con éxito en '{ruta_salida}'!")
