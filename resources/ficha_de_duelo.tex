@@ -102,8 +102,11 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\newcommand{\competidorA}{Nombre Competidor A}
-\newcommand{\competidorB}{Nombre Competidor B}
+\newcommand{\competidorA}{Tristán Muñoz}
+\newcommand{\competidorB}{Camilo Cortés}
+\newcommand{\fecha}{Fecha 1}
+\newcommand{\nduelo}{Duelo 5}
+\newcommand{\narena}{Arena 2}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -125,8 +128,8 @@
     %texto de inicio
     \begin{minipage}[t]{0.65\textwidth}
         {\Huge\textbf{Ficha de Duelo}}\\[6pt]
-        {\LARGE\textbf{Fecha X}}\\[5pt]
-        {\Large Duelo Y}
+        {\LARGE\textbf{\fecha}}\\[5pt]
+        {\Large \nduelo}
     \end{minipage}
 \end{minipage}%
 \hfill
@@ -142,13 +145,13 @@
 
 \vspace{10mm}
 
-{\Huge\textbf{Arena X}}
+{\Huge\textbf{\narena}}
 
 \begin{center}
     \begin{tabularx}{\textwidth}{| >{\centering\arraybackslash}p{100mm} | C | C |}\hline
         \vspace{3mm} {\LARGE\textbf{Competidores}} & \vspace{3mm} {\Large\textbf{Color}} & \vspace{3mm} {\Large\textbf{Puntos}} \\[30pt] \hline
-        \vspace{3mm} \competidorA & \vspace{3mm}  & \cellcolor{lightgray} \vspace{3mm}  \\[25pt] \hline
-        \vspace{3mm} \competidorB & \vspace{3mm}  & \cellcolor{lightgray} \vspace{3mm} \\[25pt] \hline
+        \vspace{3mm} {\Large\competidorA} & \vspace{3mm}  & \cellcolor{lightgray} \vspace{3mm}  \\[25pt] \hline
+        \vspace{3mm} {\Large\competidorB} & \vspace{3mm}  & \cellcolor{lightgray} \vspace{3mm} \\[25pt] \hline
     \end{tabularx}
 \end{center}
 
