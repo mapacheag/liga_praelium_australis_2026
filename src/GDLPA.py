@@ -130,6 +130,9 @@ class Duelo:
         self.esgrimista_a = esgrimista_a
         self.esgrimista_b = esgrimista_b
         self.resultado = []
+        self.puntos_a = None
+        self.puntos_b = None
+        self.dobles = None
         ## El resultado ingresado será de la forma R_i = [\alpha,\beta,\gamma]
         ## Donde R_i es el resultado del iésimo duelo del registro
         ## \alpha es el puntaje de duelo del esgrimista_a
@@ -167,6 +170,9 @@ class Duelo:
         ]
         self.esgrimista_a.puntaje.append(puntaje_out_a)
         self.esgrimista_b.puntaje.append(puntaje_out_b)
+        self.puntos_a = intercambios_a
+        self.puntos_b = intercambios_b
+        self.dobles = dobles
 
     ## Función para asignar sanciones de un duelo finalizado
     def asignar_sanciones(self, sancion_leve_a: int = 0, sancion_grave_a: int = 0, sancion_leve_b: int = 0, sancion_grave_b: int = 0):
@@ -181,6 +187,11 @@ class Duelo:
             input_asignar_sanciones = []
         self.asignar_puntaje(*input_asignar_puntaje)
         self.asignar_sanciones(*input_asignar_sanciones)
+
+    def fijar_marcador_fixture(self, intercambios_a: int, intercambios_b: int, dobles: int) -> None:
+        self.puntos_a = intercambios_a
+        self.puntos_b = intercambios_b
+        self.dobles = dobles
 
     def __repr__(self):
         return f"{self.esgrimista_a.nombre} vs {self.esgrimista_b.nombre}"
