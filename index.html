@@ -3,6 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <title>GDLPA 2026 - Praelium Australis</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -56,6 +59,13 @@
             gap: 50px;
         }
 
+        .columna-botones {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+            align-items: center;
+        }
+
         .imagen-central {
             height: 400px;
             width: auto;
@@ -68,9 +78,12 @@
             font-family: 'Cardo', serif;
             font-weight: 700;
             font-size: 1.2rem;
-            padding: 15px 30px;
+            padding: 15px 20px;
             border: 2px solid #E86509;
             border-radius: 5px;
+            width: 220px;
+            text-align: center;
+            box-sizing: border-box;
             transition: background-color 0.3s, transform 0.1s;
         }
 
@@ -78,24 +91,33 @@
             background-color: #ff7e23;
             transform: scale(1.05);
         }
-        @media (max-width: 650px) {
+
+        @media (max-width: 768px) {
             .header-container {
                 flex-direction: column;
                 text-align: center;
                 gap: 10px;
+                margin-top: 25px;
             }
             .main-content {
                 flex-direction: column;
-                gap: 20px;
+                margin-top: 30px;
+                margin-bottom: 40px;
+                gap: 15px;
                 padding: 0 20px;
             }
-            .feder-img {
+            .imagen-central {
+                order: -1;
                 height: 220px;
+                margin-bottom: 10px;
             }
-            .boton-liga {
+            .columna-botones {
+                gap: 15px;
+                width: 100%;
+            }
+            .boton-nav {
                 width: 100%;
                 max-width: 260px;
-                text-align: center;
             }
         }
     </style>
@@ -112,11 +134,19 @@
     </div>
 
     <div class="main-content">
-        <a href="fixture.html" onclick="this.href='fixture.html?v=' + Date.now()" class="boton-nav">Fixture de Liga</a>
+        <div class="columna-botones">
+            <a href="fixture.html" onclick="this.href='fixture.html?v=' + Date.now()" class="boton-nav">Fixture de Liga</a>
+            <a href="./resources/reglamento_liga_2026.pdf" onclick="this.href='./resources/reglamento_liga_2026.pdf?v=' + Date.now()" target="_blank" rel="noopener noreferrer" class="boton-nav">Reglamento</a>
+            <a href="estadisticas.html" onclick="this.href='estadisticas.html?v=' + Date.now()" class="boton-nav">Estadísticas</a>
+        </div>
 
         <img src="assets/images/feder_rotada.png" alt="Feder Vertical" class="imagen-central">
 
-        <a href="ranking.html" onclick="this.href='ranking.html?v=' + Date.now()" class="boton-nav">Ranking de Liga</a>
+        <div class="columna-botones">
+            <a href="ranking.html" onclick="this.href='ranking.html?v=' + Date.now()" class="boton-nav">Ranking de Liga</a>
+            <a href="fichas_de_duelo.html" onclick="this.href='fichas_de_duelo.html?v=' + Date.now()" class="boton-nav">Fichas de Duelo</a>
+            <a href="jueces_arenas.html" onclick="this.href='jueces_arenas.html?v=' + Date.now()" class="boton-nav">Jueces y Arenas</a>
+        </div>
     </div>
 
 </body>
