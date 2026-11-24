@@ -6,7 +6,7 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-   <title>Jueces y Arenas - Liga Praelium Australis 2026</title>
+    <title>Jueces y Arenas - Liga Praelium Australis 2026</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cardo:wght@400;700&display=swap" rel="stylesheet">
@@ -17,7 +17,6 @@
             font-family: 'Cardo', serif;
             margin: 0;
             padding: 20px;
-            min-height: 90vh;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -35,7 +34,7 @@
         .header-text h1 { margin: 0; font-size: 1.8rem; font-weight: 400; }
         .header-text h2 { margin: 2px 0; font-size: 1.3rem; font-weight: 400; color: #E86509; }
         .header-text h3 { margin: 0; font-size: 1.1rem; font-weight: 400; color: #cccccc; }
-        
+
         .boton-volver {
             background-color: #E86509;
             color: #000;
@@ -48,25 +47,93 @@
         }
         .boton-volver:hover { background-color: #ff7e23; }
 
-        .mensaje-construccion {
-            flex-grow: 1;
+        .buscador-container {
+            width: 95%;
+            max-width: 900px;
+            margin-bottom: 25px;
             display: flex;
-            flex-direction: column;
             justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 40px 20px;
         }
-        .texto-naranjo {
-            color: #E86509;
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin: 0 0 12px 0;
-        }
-        .texto-paciencia {
+        #buscador {
+            width: 100%;
+            max-width: 400px;
+            padding: 12px 20px;
+            font-size: 1.1rem;
+            border-radius: 8px;
+            border: 1px solid #E86509;
+            background-color: #1e1e1e;
             color: #ffffff;
-            font-size: 1.25rem;
-            margin: 0;
+            font-family: 'Cardo', serif;
+        }
+        #buscador:focus {
+            outline: none;
+            box-shadow: 0 0 8px rgba(232, 101, 9, 0.7);
+        }
+
+        .contenedor-fecha {
+            width: 95%;
+            max-width: 900px;
+            margin-bottom: 40px;
+        }
+        .titulo-fecha {
+            color: #ffffff;
+            font-size: 1.95rem;
+            margin-top: 10px;
+            margin-bottom: 20px;
+            text-align: left;
+            border-bottom: 2px solid #E86509;
+            padding-bottom: 6px;
+        }
+        .titulo-arena {
+            color: #ffffff;
+            font-size: 1.45rem;
+            font-weight: 700;
+            margin-top: 25px;
+            margin-bottom: 10px;
+            text-align: left;
+        }
+
+        .tabla-responsive {
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+            border: 1px solid #444;
+            margin-bottom: 30px;
+        }
+        .tabla-liga {
+            border-collapse: collapse;
+            width: 100%;
+            min-width: 680px;
+            background-color: #1e1e1e;
+        }
+        .tabla-liga th {
+            background-color: #E86509;
+            color: #000000;
+            font-weight: 700;
+            padding: 12px 10px;
+            text-align: center;
+            font-size: 1.1rem;
+            border: 1px solid #333;
+        }
+        .tabla-liga td {
+            padding: 10px 8px;
+            text-align: center;
+            border: 1px solid #333;
+            transition: background-color 0.15s, color 0.15s;
+        }
+        .tabla-liga tbody tr:nth-child(odd) { background-color: #1e1e1e; }
+        .tabla-liga tbody tr:nth-child(even) { background-color: #262626; }
+
+        .col-duelo { width: 11%; color: #ffffff; }
+        .col-combatiente { width: 15.5%; }
+        .col-rol { width: 14.5%; }
+        .texto-naranjo { color: #E86509; }
+
+        .celda-resaltada {
+            background-color: #1b3b1e !important;
+            color: #4cd964 !important;
+            font-weight: 700;
         }
     </style>
 </head>
@@ -81,9 +148,164 @@
     </a>
     <a href="index.html" class="boton-volver">← Volver al Inicio</a>
 
-    <div class="mensaje-construccion">
-        <p class="texto-naranjo">Sección en construcción: Se encontrará en funcionamiento a la brevedad</p>
-        <p class="texto-paciencia">Paciencia :)</p>
+    <div class="buscador-container">
+        <input type="text" id="buscador" onkeyup="resaltarEsgrimista()" placeholder="Buscar esgrimista (ej: Felipe...)">
     </div>
+
+    <div class="contenedor-fecha">
+        <h2 class="titulo-fecha">Fecha 4</h2>
+
+        <h3 class="titulo-arena">Arena 1</h3>
+        <div class="tabla-responsive">
+            <table class="tabla-liga">
+                <thead>
+                    <tr>
+                        <th class="col-duelo">Duelo</th>
+                        <th colspan="2">Combaten</th>
+                        <th class="col-rol">Juez Central</th>
+                        <th class="col-rol">Bandera</th>
+                        <th class="col-rol">Marcador</th>
+                        <th class="col-rol">Ficha</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="col-duelo">Duelo 1</td>
+                        <td class="col-combatiente texto-naranjo celda-participante">Cristian H</td>
+                        <td class="col-combatiente texto-naranjo celda-participante">Constanza L</td>
+                        <td class="celda-participante">Simón R</td>
+                        <td class="texto-naranjo celda-participante">Micaela R</td>
+                        <td class="texto-naranjo celda-participante">Alexis G</td>
+                        <td class="celda-participante">Angela G</td>
+                    </tr>
+                    <tr>
+                        <td class="col-duelo">Duelo 2</td>
+                        <td class="col-combatiente texto-naranjo celda-participante">Micaela R</td>
+                        <td class="col-combatiente texto-naranjo celda-participante">Alexis G</td>
+                        <td class="celda-participante">Simón R</td>
+                        <td class="texto-naranjo celda-participante">Federico H</td>
+                        <td class="texto-naranjo celda-participante">Constanza L</td>
+                        <td class="celda-participante">Angela G</td>
+                    </tr>
+                    <tr>
+                        <td class="col-duelo">Duelo 3</td>
+                        <td class="col-combatiente texto-naranjo celda-participante">Federico H</td>
+                        <td class="col-combatiente texto-naranjo celda-participante">Constanza L</td>
+                        <td class="celda-participante">Fabricio M</td>
+                        <td class="texto-naranjo celda-participante">Renato C</td>
+                        <td class="texto-naranjo celda-participante">Guido P</td>
+                        <td class="celda-participante">Angela G</td>
+                    </tr>
+                    <tr>
+                        <td class="col-duelo">Duelo 4</td>
+                        <td class="col-combatiente texto-naranjo celda-participante">Renato C</td>
+                        <td class="col-combatiente texto-naranjo celda-participante">Guido P</td>
+                        <td class="celda-participante">Fabricio M</td>
+                        <td class="texto-naranjo celda-participante">Simón R</td>
+                        <td class="texto-naranjo celda-participante">Angela G</td>
+                        <td class="celda-participante">Renato C</td>
+                    </tr>
+                    <tr>
+                        <td class="col-duelo">Duelo 5</td>
+                        <td class="col-combatiente texto-naranjo celda-participante">Simón R</td>
+                        <td class="col-combatiente texto-naranjo celda-participante">Angela G</td>
+                        <td class="celda-participante">Cristian H</td>
+                        <td class="texto-naranjo celda-participante">Federico H</td>
+                        <td class="texto-naranjo celda-participante">Guido P</td>
+                        <td class="celda-participante">Renato C</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h3 class="titulo-arena">Arena 2</h3>
+        <div class="tabla-responsive">
+            <table class="tabla-liga">
+                <thead>
+                    <tr>
+                        <th class="col-duelo">Duelo</th>
+                        <th colspan="2">Combaten</th>
+                        <th class="col-rol">Juez Central</th>
+                        <th class="col-rol">Bandera</th>
+                        <th class="col-rol">Marcador</th>
+                        <th class="col-rol">Ficha</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="col-duelo">Duelo 1</td>
+                        <td class="col-combatiente texto-naranjo celda-participante">Fabricio M</td>
+                        <td class="col-combatiente texto-naranjo celda-participante">Natalia S</td>
+                        <td class="celda-participante">Guido P</td>
+                        <td class="texto-naranjo celda-participante">Enrique O</td>
+                        <td class="texto-naranjo celda-participante">Rodrigo B</td>
+                        <td class="celda-participante">Tomás A</td>
+                    </tr>
+                    <tr>
+                        <td class="col-duelo">Duelo 2</td>
+                        <td class="col-combatiente texto-naranjo celda-participante">Enrique O</td>
+                        <td class="col-combatiente texto-naranjo celda-participante">Rodrigo B</td>
+                        <td class="celda-participante">Guido P</td>
+                        <td class="texto-naranjo celda-participante">Natalia S</td>
+                        <td class="texto-naranjo celda-participante">Zoe V</td>
+                        <td class="celda-participante">Tomás A</td>
+                    </tr>
+                    <tr>
+                        <td class="col-duelo">Duelo 3</td>
+                        <td class="col-combatiente texto-naranjo celda-participante">Natalia S</td>
+                        <td class="col-combatiente texto-naranjo celda-participante">Zoe V</td>
+                        <td class="celda-participante">Rodrigo B</td>
+                        <td class="texto-naranjo celda-participante">Tomás A</td>
+                        <td class="texto-naranjo celda-participante">Enrique O</td>
+                        <td class="celda-participante">Alexis G</td>
+                    </tr>
+                    <tr>
+                        <td class="col-duelo">Duelo 4</td>
+                        <td class="col-combatiente texto-naranjo celda-participante">Tomás A</td>
+                        <td class="col-combatiente texto-naranjo celda-participante">Enrique O</td>
+                        <td class="celda-participante">Rodrigo B</td>
+                        <td class="texto-naranjo celda-participante">Zoe V</td>
+                        <td class="texto-naranjo celda-participante">Alexis G</td>
+                        <td class="celda-participante">Constanza L</td>
+                    </tr>
+                    <tr>
+                        <td class="col-duelo">Duelo 5</td>
+                        <td class="col-combatiente texto-naranjo celda-participante">Zoe V</td>
+                        <td class="col-combatiente texto-naranjo celda-participante">Alexis G</td>
+                        <td class="celda-participante">Rodrigo B</td>
+                        <td class="texto-naranjo celda-participante">Natalia S</td>
+                        <td class="texto-naranjo celda-participante">Tomás A</td>
+                        <td class="celda-participante">Constanza L</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        function normalizarTexto(texto) {
+            return texto
+                .toLowerCase()
+                .normalize("NFD")
+                .replace(/[\u0300-\u036f]/g, "")
+                .trim();
+        }
+
+        function resaltarEsgrimista() {
+            const filtro = normalizarTexto(document.getElementById('buscador').value);
+            const celdas = document.getElementsByClassName('celda-participante');
+
+            for (let i = 0; i < celdas.length; i++) {
+                const celda = celdas[i];
+                const nombre = normalizarTexto(celda.textContent || celda.innerText);
+
+                if (filtro !== "" && nombre.includes(filtro)) {
+                    celda.classList.add('celda-resaltada');
+                } else {
+                    celda.classList.remove('celda-resaltada');
+                }
+            }
+        }
+    </script>
 </body>
 </html>
