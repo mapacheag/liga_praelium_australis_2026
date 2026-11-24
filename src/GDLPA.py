@@ -719,3 +719,22 @@ class ConfiguracionLiga:
         with open(ruta_salida, "w", encoding="utf-8") as f:
             f.write(html_completo)
         print(f"¡Ranking HTML generado con éxito en '{ruta_salida}'!")
+
+#### Esta clase está destinada a mantener en un espacio separado todas aquellas herramientas de uso personal para el estudio estadístico de la liga
+### Su modifcación o inclusión no afecta en nada el desarrollo del resto del código y/o la gestión o administración de la liga
+
+class Estadisticas:
+    def __init__(self):
+        pass
+
+### Por ahora me son de interés los siguientes análisis
+    ## Top 3 esgrimistas con mayor cantidad de puntos a favor
+    ## Top 3 esgrimistas con menor cantidad de puntos en contra
+    ## Conteo global de puntos cometidos por zona (quizás con una representación gráfica)
+    ## Top 3 zonas más atacadas por los esgrimistas
+    ## Conteo global de dobles y un índice que consiga estimar la cantidad de dobles en la liga
+        ## a priori, un indice basico es total de dobles  / total de duelos
+    
+    ## Relaciones:
+        ## Debo pensar en relaciones
+        ## Un grafico interactivo podría ser buena idea

@@ -120,11 +120,9 @@
             padding: 10px 8px;
             text-align: center;
             border: 1px solid #333;
-            transition: background-color 0.15s, color 0.15s;
         }
-        .tabla-liga tbody tr:nth-child(odd) { background-color: #1e1e1e; }
-        .tabla-liga tbody tr:nth-child(even) { background-color: #262626; }
-
+        .tabla-liga tbody tr:nth-child(odd) td { background-color: #1e1e1e; }
+        .tabla-liga tbody tr:nth-child(even) td { background-color: #262626; }
         .col-duelo { width: 11%; color: #ffffff; }
         .col-combatiente { width: 15.5%; }
         .col-rol { width: 14.5%; }
@@ -149,7 +147,7 @@
     <a href="index.html" class="boton-volver">← Volver al Inicio</a>
 
     <div class="buscador-container">
-        <input type="text" id="buscador" onkeyup="resaltarEsgrimista()" placeholder="Buscar esgrimista (ej: Felipe...)">
+        <input type="text" id="buscador" oninput="resaltarEsgrimista()" placeholder="Buscar esgrimista (ej: Felipe...)">
     </div>
 
     <div class="contenedor-fecha">
