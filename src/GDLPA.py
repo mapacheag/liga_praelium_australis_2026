@@ -48,6 +48,15 @@ import pandas as pd
 import random as rd
 import datetime
 import pickle
+import seaborn as sbn
+import matplotlib
+import numpy as np
+import matplotlib.pyplot as plt 
+from matplotlib.gridspec import GridSpec
+from matplotlib.lines import Line2D
+from matplotlib.ticker import MaxNLocator
+from matplotlib.colors import LinearSegmentedColormap
+from scipy.stats import gaussian_kde
 
 #####################################
 
@@ -723,18 +732,662 @@ class ConfiguracionLiga:
 #### Esta clase está destinada a mantener en un espacio separado todas aquellas herramientas de uso personal para el estudio estadístico de la liga
 ### Su modifcación o inclusión no afecta en nada el desarrollo del resto del código y/o la gestión o administración de la liga
 
-class Estadisticas:
-    def __init__(self):
-        pass
-
 ### Por ahora me son de interés los siguientes análisis
-    ## Top 3 esgrimistas con mayor cantidad de puntos a favor
-    ## Top 3 esgrimistas con menor cantidad de puntos en contra
-    ## Conteo global de puntos cometidos por zona (quizás con una representación gráfica)
-    ## Top 3 zonas más atacadas por los esgrimistas
-    ## Conteo global de dobles y un índice que consiga estimar la cantidad de dobles en la liga
+    ## Top 3 esgrimistas con mayor cantidad de puntos a favor    ---- ok
+    ## Top 3 esgrimistas con menor cantidad de puntos en contra ---- ok
+    ## Conteo global de puntos cometidos por zona (quizás con una representación gráfica)   ----ok
+    ## Top 3 zonas más atacadas por los esgrimistas ---- ok
+    ## Conteo global de dobles y un índice que consiga estimar la cantidad de dobles en la liga --- ok
         ## a priori, un indice basico es total de dobles  / total de duelos
     
     ## Relaciones:
         ## Debo pensar en relaciones
         ## Un grafico interactivo podría ser buena idea
+
+class STATS:
+    def __init__(self, liga = ConfiguracionLiga):
+        self.liga = liga
+        self.stat_input_csv = pd.DataFrame()
+        self.STATS_DATA = pd.DataFrame()
+
+    def cargar_csv(self, ruta_csv : str) -> pd.DataFrame:
+        self.stat_input_csv = pd.read_csv(ruta_csv)
+        return self.stat_input_csv
+
+    STAT_intercambios_col = [
+        'CAR01', 'CAR02', 'CAR03', 'CAR04',
+        'TOR01', 'TOR02', 'TOR03',
+        'EX01', 'EX02', 'EX03',
+        'JC05', 'JC06', 'JC07',
+        'PER'
+    ]
+
+    def constructor_STATS_DATA(self, stat_input_csv : pd.DataFrame = None) -> pd.DataFrame:
+        if stat_input_csv is not None:
+            self.stat_input_csv = stat_input_csv
+        if self.stat_input_csv.empty:
+            raise ValueError(f"No hay un documento de STAT input con el que trabajar")
+        
+        df_esgrimistas = pd.DataFrame([{
+            'Nombres' : esgrimista.nombre.strip(),
+            'Int +' : esgrimista.intercambios_favorables,
+            'Int -' : esgrimista.intercambios_desfavorables,
+            'Dobles' : esgrimista.dobles_total
+        }
+        for esgrimista in self.liga.participantes
+        ])
+
+        df_stat_intercambios = self.stat_input_csv
+        df_stat_intercambios['Nombres'] = df_stat_intercambios['Nombres'].str.strip()
+
+        self.STATS_DATA = pd.merge(df_esgrimistas, df_stat_intercambios, on='Nombres', how='left')
+        self.STATS_DATA[self.STAT_intercambios_col] = (self.STATS_DATA[self.STAT_intercambios_col].fillna(0).astype(int))
+
+        return self.STATS_DATA
+
+    @property
+    def top3_favorables(self) -> pd.DataFrame:
+        return(
+            self.STATS_DATA[['Nombres', 'Int +']]
+            .sort_values(by='Int +', ascending=False)
+            .head(3)
+            .reset_index(drop=True)
+        )
+
+    @property
+    def top3_menos_desfavorables(self) -> pd.DataFrame:
+        activos = self.STATS_DATA[
+            (self.STATS_DATA['Int +'] > 0) |
+            (self.STATS_DATA['Int -'] > 0)
+        ]
+        return (
+            activos[['Nombres', 'Int -']]
+            .sort_values(by='Int -', ascending=True)
+            .head(3)
+            .reset_index(drop=True)
+        )
+
+    @property
+    def conteo_por_zona(self) -> pd.Series:
+        zonas = {
+            'Careta' : self.STATS_DATA[['CAR01', 'CAR02', 'CAR03', 'CAR04']].sum().sum(),
+            'Torso' : self.STATS_DATA[['TOR01', 'TOR02', 'TOR03']].sum().sum(),
+            'Extremidades' : self.STATS_DATA[['EX01', 'EX02', 'EX03']].sum().sum(),
+            'Juego Corto' : self.STATS_DATA[['JC05', 'JC06', 'JC07']].sum().sum(),
+            'Perímetro' : self.STATS_DATA['PER'].sum()
+        }
+        return pd.Series(zonas).sort_values(ascending=False)
+
+    @property
+    def top3_zonas(self) -> pd.Series:
+        return self.conteo_por_zona.head(3)
+
+    @property
+    def doblesT_stat(self) -> int:
+        return sum(
+            getattr(duelo, 'dobles', 0) or 0
+            for lista_duelos in self.liga.fixture_de_liga.values()
+            for duelo in lista_duelos
+            if getattr(duelo, 'puntos_a', None) is not None and getattr(duelo, 'puntos_b', None) is not None
+        )
+
+    @property
+    def doblesP_stat(self) -> float:
+        duelos_jugados = sum(
+            1
+            for lista_duelos in self.liga.fixture_de_liga.values()
+            for duelo in lista_duelos
+            if getattr(duelo, 'puntos_a', None) is not None and getattr(duelo, 'puntos_b', None) is not None
+        )
+        if duelos_jugados == 0:
+            return 0.0
+        return round(self.doblesT_stat / duelos_jugados, 3)
+
+
+    ######### gráficos
+
+    def duelos_DATA(self) -> pd.DataFrame:
+            registros = []
+            for idx, (nombre_fecha, lista_duelos) in enumerate(self.liga.fixture_de_liga.items(), start=1):
+                for duelo in lista_duelos:
+                    pts_a = getattr(duelo, 'puntos_a', None)
+                    pts_b = getattr(duelo, 'puntos_b', None)
+                    if pts_a is not None and pts_b is not None:
+                        registros.append({
+                            'Fecha #' : idx,
+                            'Fecha' : nombre_fecha,
+                            'Dif Pts' : abs(pts_a - pts_b),
+                            'Dobles' : getattr(duelo, 'dobles', 0) or 0
+                        })
+            return pd.DataFrame(registros)
+
+    def estilo_PA(self, ax, titulo: str, xlabel: str, ylabel: str) -> None:
+        ax.set_facecolor('#fafafa')
+        ax.set_title(titulo, color='#262626', fontsize=12.5, fontweight='bold', pad=12)
+        ax.set_xlabel(xlabel, color='#262626', fontsize=11)
+        ax.set_ylabel(ylabel, color='#262626', fontsize=11)
+        ax.tick_params(colors='#262626')
+        ax.grid(True, linestyle='--', alpha=0.35, color='#bbbbbb')
+        for spine in ax.spines.values():
+            spine.set_color('#cccccc')
+
+    def graph1_ZONAS(self, guardar_ruta: str = None):
+        datos = self.conteo_por_zona.reset_index()
+        datos.columns = ['Zona', 'Puntos']
+
+        fig, ax = plt.subplots(figsize=(8.5, 5), facecolor='#ffffff')
+        sbn.barplot(
+            data=datos,
+            x='Zona',
+            y='Puntos',
+            color='#E86509',
+            edgecolor='#262626',
+            linewidth=0.9,
+            width=0.55,
+            ax=ax
+        )
+
+        for barra in ax.patches:
+            altura = barra.get_height()
+            ax.annotate(
+                f'{int(altura)}',
+                xy=(barra.get_x() + barra.get_width() / 2, altura),
+                xytext=(0, 4),
+                textcoords='offset points',
+                ha='center', va='bottom',
+                color='#262626', fontweight='bold', fontsize=10
+            )
+
+        ax.set_ylim(0, datos['Puntos'].max() * 1.15 if not datos.empty else 10)
+        self.estilo_PA(ax, 'Ataques por zona de impacto', 'Zona de impacto', 'Cantidad de ataques')
+        plt.tight_layout()
+        if guardar_ruta:
+            plt.savefig(guardar_ruta, dpi=150, bbox_inches='tight', facecolor=fig.get_facecolor())
+        plt.show()
+
+    def graph2_DOBLES_TEMP(self, guardar_ruta: str = None):
+        df_duelos = self.duelos_DATA()
+        if df_duelos.empty:
+            return
+
+        resumen = (
+            df_duelos.groupby(['Fecha #', 'Fecha'], as_index=False)
+            .agg(doblesT=('Dobles', 'sum'), duelosT=('Dobles', 'count'))
+            .sort_values('Fecha #')
+        )
+        resumen['Promedio Local'] = resumen['doblesT'] / resumen['duelosT']
+        resumen['Idx_X'] = np.arange(len(resumen))
+
+        fig, ax = plt.subplots(figsize=(9, 5), facecolor='#ffffff')
+        sbn.scatterplot(
+            data=resumen,
+            x='Idx_X',
+            y='doblesT',
+            size='duelosT',
+            sizes=(150, 450),
+            color='#E86509',
+            edgecolor='#262626',
+            linewidth=1.1,
+            legend=False,
+            zorder=4,
+            ax=ax
+        )
+
+        if len(resumen) >= 2:
+            m, b = np.polyfit(resumen['Idx_X'], resumen['doblesT'], 1)
+            ax.plot(
+                resumen['Idx_X'],
+                m * resumen['Idx_X'] + b,
+                linestyle='--',
+                color='#16a34a',
+                linewidth=2,
+                zorder=3,
+                label=f'Tendencia Lineal (m = {m:+.2f})'
+            )
+
+        for _, row in resumen.iterrows():
+            etiqueta = f"Duelos: {int(row['duelosT'])}\nProm: {row['Promedio Local']:.2f}"
+            ax.annotate(
+                etiqueta,
+                xy=(row['Idx_X'], row['doblesT']),
+                xytext=(0, 14),
+                textcoords='offset points',
+                ha='center', va='bottom',
+                color='#262626', fontsize=9, fontweight='bold',
+                bbox=dict(boxstyle='round,pad=0.25', facecolor='#ffffff', edgecolor='#E86509', alpha=0.92)
+            )
+
+        ax.set_xticks(resumen['Idx_X'])
+        ax.set_xticklabels(resumen['Fecha'])
+        ax.set_ylim(0, resumen['doblesT'].max() * 1.38)
+        self.estilo_PA(ax, 'Evolución temporal de intercambios dobles por Fecha de competencia', 'Fecha', 'Total de dobles')
+        if len(resumen) >= 2:
+            ax.legend(facecolor='#ffffff', edgecolor='#cccccc', labelcolor='#262626')
+        plt.tight_layout()
+        if guardar_ruta:
+            plt.savefig(guardar_ruta, dpi=150, bbox_inches='tight', facecolor=fig.get_facecolor())
+        plt.show()
+
+    def graph3_DOBLES_DIF(self, guardar_ruta: str = None):
+        from matplotlib.lines import Line2D
+        from matplotlib.ticker import MaxNLocator
+
+        df_duelos = self.duelos_DATA()
+        if df_duelos.empty:
+            return
+
+        fig, ax = plt.subplots(figsize=(9.5, 5.2), facecolor='#ffffff')
+
+        if len(df_duelos) >= 5:
+            sbn.kdeplot(
+                data=df_duelos,
+                x='Dif Pts',
+                y='Dobles',
+                fill=True,
+                cmap='Oranges',
+                alpha=0.28,
+                levels=6,
+                thresh=0.1,
+                zorder=1,
+                ax=ax
+            )
+
+        sbn.regplot(
+            data=df_duelos,
+            x='Dif Pts',
+            y='Dobles',
+            scatter=False,
+            line_kws={
+                'color': '#16a34a',
+                'linestyle': '--',
+                'linewidth': 2,
+                'label': 'Ajuste lineal (IC 95%)'
+            },
+            ax=ax
+        )
+
+        conteo = (
+            df_duelos.groupby(['Dif Pts', 'Dobles'], as_index=False)
+            .size()
+            .rename(columns={'size': 'Duelos (masa)'})
+        )
+
+        sbn.scatterplot(
+            data=conteo,
+            x='Dif Pts',
+            y='Dobles',
+            size='Duelos (masa)',
+            sizes=(75, 320),
+            color='#E86509',
+            alpha=0.92,
+            edgecolor='#262626',
+            linewidth=1.0,
+            zorder=4,
+            ax=ax
+        )
+
+        ax.xaxis.set_major_locator(MaxNLocator(integer=True))
+        ax.yaxis.set_major_locator(MaxNLocator(integer=True))
+        self.estilo_PA(
+            ax,
+            'Relación entre la cantidad de dobles en un duelo y su respectiva diferencia de puntaje',
+            r'Diferencia de puntaje ($\left|\mathrm{pts}_a - \mathrm{pts}_b\right|$)',
+            'Dobles en el Duelo'
+        )
+
+        handles, labels = ax.get_legend_handles_labels()
+        linea_reg = Line2D([0], [0], color='#16a34a', linestyle='--', linewidth=2)
+        ax.legend(
+            handles=[linea_reg] + handles,
+            labels=['Ajuste lineal (IC 95%)'] + [f'{lbl} duelo(s)' for lbl in labels],
+            facecolor='#ffffff',
+            edgecolor='#cccccc',
+            labelcolor='#262626',
+            fontsize=8.5,
+            labelspacing=1.25,
+            borderpad=0.85,
+            loc='upper right'
+        )
+
+        plt.tight_layout()
+        if guardar_ruta:
+            plt.savefig(guardar_ruta, dpi=150, bbox_inches='tight', facecolor=fig.get_facecolor())
+        plt.show()
+
+    def graph4_MIX(self, guardar_ruta: str = None):
+        from matplotlib.colors import LinearSegmentedColormap
+        from matplotlib.gridspec import GridSpec
+        from matplotlib.ticker import MaxNLocator
+
+        df = self.duelos_DATA()
+        if df.empty:
+            return
+
+        fechas = df['Fecha'].unique()
+        paleta = ['#dc2626', '#7c3aed', '#eab308', '#0284c7', '#db2777', '#E86509']
+        colores_fecha = {f: paleta[i % len(paleta)] for i, f in enumerate(fechas)}
+
+        fig = plt.figure(figsize=(10.5, 7.5), facecolor='#ffffff')
+        gs = GridSpec(4, 4, figure=fig, hspace=0.22, wspace=0.22)
+
+        ax_main = fig.add_subplot(gs[1:4, 0:3])
+        ax_top = fig.add_subplot(gs[0, 0:3], sharex=ax_main)
+        ax_right = fig.add_subplot(gs[1:4, 3], sharey=ax_main)
+
+        if len(df) >= 5:
+            cmap_pa = LinearSegmentedColormap.from_list(
+                'PA_Oranges', ['#ffedd5', '#fdba74', '#f97316', '#c2410c', '#7c2d12']
+            )
+            sbn.kdeplot(
+                data=df,
+                x='Dif Pts',
+                y='Dobles',
+                fill=True,
+                cmap=cmap_pa,
+                alpha=0.38,
+                levels=5,
+                thresh=0.12,
+                zorder=1,
+                ax=ax_main
+            )
+            sbn.kdeplot(
+                data=df,
+                x='Dif Pts',
+                y='Dobles',
+                fill=False,
+                color='#9a3412',
+                linewidths=0.8,
+                alpha=0.45,
+                levels=5,
+                thresh=0.12,
+                zorder=1,
+                ax=ax_main
+            )
+
+        conteo_eventos = (
+            df.groupby(['Fecha #', 'Fecha', 'Dif Pts', 'Dobles'], as_index=False)
+            .size()
+            .rename(columns={'size': 'Multiplicidad'})
+        )
+
+        sbn.scatterplot(
+            data=conteo_eventos,
+            x='Dif Pts',
+            y='Dobles',
+            hue='Fecha',
+            size='Multiplicidad',
+            sizes=(75, 320),
+            palette=colores_fecha,
+            alpha=0.88,
+            edgecolor='#262626',
+            linewidth=0.9,
+            legend=False,
+            zorder=3,
+            ax=ax_main
+        )
+
+        centroides = (
+            df.groupby(['Fecha #', 'Fecha'], as_index=False)
+            .agg(
+                Mean_Dif=('Dif Pts', 'mean'),
+                Mean_Dobles=('Dobles', 'mean'),
+                N_Duelos=('Dobles', 'count')
+            )
+            .sort_values('Fecha #')
+        )
+
+        cx = centroides['Mean_Dif'].values
+        cy = centroides['Mean_Dobles'].values
+        ax_main.plot(cx, cy, color='#262626', linestyle='-', linewidth=1.5, alpha=0.8, zorder=4)
+
+        for i in range(len(centroides) - 1):
+            ax_main.annotate(
+                '',
+                xy=(cx[i + 1], cy[i + 1]),
+                xytext=(cx[i], cy[i]),
+                arrowprops=dict(arrowstyle='->', color='#262626', lw=1.8, shrinkA=6, shrinkB=6),
+                zorder=5
+            )
+
+        offsets_etiquetas = [
+            (-82, 26),   
+            (24, -36), 
+            (26, 26),    
+            (-82, -36),  
+        ]
+
+        for idx_c, (_, row) in enumerate(centroides.iterrows()):
+            c_color = colores_fecha[row['Fecha']]
+            dx, dy = offsets_etiquetas[idx_c % len(offsets_etiquetas)]
+
+            ax_main.scatter(
+                row['Mean_Dif'], row['Mean_Dobles'],
+                s=row['N_Duelos'] * 28,
+                color=c_color,
+                marker='D',
+                edgecolors='#262626',
+                linewidth=1.3,
+                zorder=6,
+                label=f"{row['Fecha']} ($N = {int(row['N_Duelos'])}$)"
+            )
+            ax_main.annotate(
+                rf"$\vec{{\mu}}_{{\mathrm{{{row['Fecha']}}}}}$" + f"\n({row['Mean_Dif']:.2f}, {row['Mean_Dobles']:.2f})",
+                xy=(row['Mean_Dif'], row['Mean_Dobles']),
+                xytext=(dx, dy),
+                textcoords='offset points',
+                color='#262626',
+                fontsize=8.5,
+                fontweight='bold',
+                bbox=dict(boxstyle='round,pad=0.25', facecolor='#ffffff', edgecolor=c_color, lw=1.3, alpha=0.95),
+                arrowprops=dict(arrowstyle='-', color=c_color, lw=1.3, shrinkA=0, shrinkB=4),
+                zorder=7
+            )
+
+        x_all = df['Dif Pts'].values
+        y_all = df['Dobles'].values
+        if len(x_all) >= 2:
+            m, b = np.polyfit(x_all, y_all, 1)
+            r = np.corrcoef(x_all, y_all)[0, 1]
+            r2 = r ** 2 if not np.isnan(r) else 0.0
+            x_lin = np.linspace(x_all.min(), x_all.max(), 100)
+            ax_main.plot(
+                x_lin, m * x_lin + b,
+                linestyle='--', color='#16a34a', linewidth=2.0, zorder=2,
+                label=rf"Regresión lineal: $y = {m:+.2f}x + {b:.2f}$ ($R^2 = {r2:.2f}$)"
+            )
+
+        ax_main.xaxis.set_major_locator(MaxNLocator(integer=True))
+        ax_main.yaxis.set_major_locator(MaxNLocator(integer=True))
+        self.estilo_PA(
+            ax_main, '',
+            r'Diferencia de puntaje ($\Delta P = \left|\mathrm{pts}_a - \mathrm{pts}_b\right|$)',
+            'Intercambios dobles por duelo'
+        )
+        ax_main.legend(facecolor='#ffffff', edgecolor='#cccccc', labelcolor='#262626', fontsize=8.5, loc='upper right')
+
+        bins_x = np.arange(x_all.min() - 0.5, x_all.max() + 1.5, 1)
+        ax_top.hist(
+            [df[df['Fecha'] == f]['Dif Pts'] for f in fechas],
+            bins=bins_x,
+            stacked=True,
+            color=[colores_fecha[f] for f in fechas],
+            edgecolor='#262626',
+            linewidth=0.6,
+            alpha=0.88
+        )
+        ax_top.yaxis.set_major_locator(MaxNLocator(integer=True))
+        self.estilo_PA(ax_top, 'Distribución bivariada y trayectoria temporal: Intercambios dobles vs. Diferencia de puntaje', '', 'Frecuencia')
+        plt.setp(ax_top.get_xticklabels(), visible=False)
+
+        bins_y = np.arange(y_all.min() - 0.5, y_all.max() + 1.5, 1)
+        ax_right.hist(
+            [df[df['Fecha'] == f]['Dobles'] for f in fechas],
+            bins=bins_y,
+            stacked=True,
+            orientation='horizontal',
+            color=[colores_fecha[f] for f in fechas],
+            edgecolor='#262626',
+            linewidth=0.6,
+            alpha=0.88
+        )
+        ax_right.axhline(self.doblesP_stat, color='#16a34a', linestyle='--', linewidth=1.6, label=rf'$\mu = {self.doblesP_stat:.2f}$')
+        ax_right.xaxis.set_major_locator(MaxNLocator(integer=True))
+        self.estilo_PA(ax_right, '', 'Frecuencia', '')
+        ax_right.legend(facecolor='#ffffff', edgecolor='#cccccc', labelcolor='#262626', fontsize=8, loc='lower right')
+        plt.setp(ax_right.get_yticklabels(), visible=False)
+
+        if guardar_ruta:
+            plt.savefig(guardar_ruta, dpi=150, bbox_inches='tight', facecolor=fig.get_facecolor())
+        plt.show()
+
+    def graph5_3DDD(self, guardar_ruta: str = None):
+        import matplotlib.patheffects as pe
+        from matplotlib.lines import Line2D
+        from matplotlib.ticker import MaxNLocator
+        from scipy.stats import gaussian_kde
+
+        df_duelos = self.duelos_DATA()
+        if df_duelos.empty:
+            return
+
+        conteo = (
+            df_duelos.groupby(['Dif Pts', 'Dobles'], as_index=False)
+            .size()
+            .rename(columns={'size': 'Duelos'})
+        )
+
+        fig = plt.figure(figsize=(10.5, 7), facecolor='#ffffff')
+        ax = fig.add_subplot(111, projection='3d')
+        ax.set_facecolor('#ffffff')
+        for axis in (ax.xaxis, ax.yaxis, ax.zaxis):
+            axis.pane.set_facecolor('#fafafa')
+            axis.pane.set_edgecolor('#cccccc')
+            axis._axinfo['grid']['color'] = '#dddddd'
+            axis._axinfo['grid']['linestyle'] = '--'
+
+        x_raw = df_duelos['Dif Pts'].values
+        y_raw = df_duelos['Dobles'].values
+        z_max = conteo['Duelos'].max()
+        if len(df_duelos) >= 5:
+            kde = gaussian_kde(np.vstack([x_raw, y_raw]))
+            xi = np.linspace(max(0, x_raw.min() - 0.8), x_raw.max() + 0.8, 70)
+            yi = np.linspace(max(0, y_raw.min() - 0.8), y_raw.max() + 0.8, 70)
+            Xi, Yi = np.meshgrid(xi, yi)
+            Zi = kde(np.vstack([Xi.ravel(), Yi.ravel()])).reshape(Xi.shape)
+            Zi = (Zi / Zi.max()) * z_max
+
+            niveles = np.linspace(0.05, z_max, 9)
+
+            surf = ax.plot_surface(
+                Xi, Yi, Zi,
+                cmap='viridis',
+                alpha=0.52,
+                rcount=70,
+                ccount=70,
+                edgecolor='#1f2937',
+                linewidth=0.14,
+                antialiased=True,
+                zorder=1
+            )
+
+            ax.contour(
+                Xi, Yi, Zi,
+                levels=niveles,
+                colors='#111827',
+                linewidths=0.75,
+                alpha=0.65,
+                zorder=2
+            )
+
+            ax.contourf(
+                Xi, Yi, Zi,
+                zdir='z',
+                offset=0,
+                levels=niveles,
+                cmap='viridis',
+                alpha=0.48
+            )
+            ax.contour(
+                Xi, Yi, Zi,
+                zdir='z',
+                offset=0,
+                levels=niveles,
+                colors='#1f2937',
+                linewidths=0.6,
+                alpha=0.55
+            )
+
+            cbar = fig.colorbar(surf, ax=ax, shrink=0.58, aspect=14, pad=0.08)
+            cbar.set_label('Densidad escalada de duelos', color='#262626', fontsize=9.5)
+            cbar.ax.tick_params(colors='#262626', labelsize=8.5)
+
+        if len(x_raw) >= 2:
+            m, b = np.polyfit(x_raw, y_raw, 1)
+            x_lin = np.linspace(x_raw.min(), x_raw.max(), 100)
+            y_lin = m * x_lin + b
+            z_lin = np.zeros_like(x_lin)
+            ax.plot(
+                x_lin, y_lin, z_lin,
+                color='#dc2626',
+                linestyle='--',
+                linewidth=2.8,
+                path_effects=[pe.Stroke(linewidth=4.2, foreground='#ffffff', alpha=0.85), pe.Normal()],
+                zorder=4
+            )
+        for _, row in conteo.iterrows():
+            x_val, y_val, z_val = row['Dif Pts'], row['Dobles'], row['Duelos']
+            ax.plot(
+                [x_val, x_val], [y_val, y_val], [0, z_val],
+                color='#111827',
+                linestyle=':',
+                linewidth=1.3,
+                alpha=0.85,
+                zorder=5
+            )
+
+        ax.scatter(
+            conteo['Dif Pts'],
+            conteo['Dobles'],
+            conteo['Duelos'],
+            s=conteo['Duelos'] * 90,
+            color='#E86509',
+            edgecolors='#111827',
+            linewidth=1.2,
+            alpha=0.98,
+            depthshade=False,
+            zorder=6
+        )
+        ax.xaxis.set_major_locator(MaxNLocator(integer=True))
+        ax.yaxis.set_major_locator(MaxNLocator(integer=True))
+        ax.zaxis.set_major_locator(MaxNLocator(integer=True))
+        ax.set_zlim(0, z_max + 0.6)
+
+        ax.set_title(
+            'Distribución 3D: Dobles por duelo, diferencia de puntaje y frecuencia',
+            color='#262626', fontsize=12.5, fontweight='bold', pad=14
+        )
+        ax.set_xlabel(r'Diferencia de puntaje ($\left|\mathrm{pts}_a - \mathrm{pts}_b\right|$)', color='#262626', fontsize=10.5, labelpad=10)
+        ax.set_ylabel('Dobles en el Duelo', color='#262626', fontsize=10.5, labelpad=10)
+        ax.set_zlabel('Cantidad de duelos (Z)', color='#262626', fontsize=10.5, labelpad=8)
+        ax.tick_params(colors='#262626')
+
+        ax.view_init(elev=26, azim=-52)
+
+        leyenda_elementos = [
+            Line2D([0], [0], marker='o', color='w', markerfacecolor='#E86509',
+                   markeredgecolor='#111827', markersize=8, label='Nodo observado (elevación = N° duelos)'),
+            Line2D([0], [0], color='#dc2626', linestyle='--', linewidth=2.6,
+                   label='Ajuste lineal en plano base (Z = 0)')
+        ]
+        ax.legend(
+            handles=leyenda_elementos,
+            facecolor='#ffffff',
+            edgecolor='#cccccc',
+            labelcolor='#262626',
+            fontsize=8.5,
+            loc='upper right'
+        )
+
+        if guardar_ruta:
+            plt.savefig(guardar_ruta, dpi=150, bbox_inches='tight', facecolor=fig.get_facecolor())
+        plt.show()
